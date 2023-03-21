@@ -9,22 +9,12 @@
           {{ choices.collection.description || $t("chart.collection") }}
         </v-toolbar-title>
         <v-tabs v-model="tab" end color="#014e9e">
-          <v-tab
-            v-for="(item, i) in tabs"
-            class="text-center pa-2"
-            :value="i"
-            :key="i"
-          >
+          <v-tab v-for="(item, i) in tabs" class="text-center pa-2" :value="i" :key="i">
             {{ $t(item) }}
           </v-tab>
         </v-tabs>
       </v-app-bar>
-      <data-navigation
-        :choices="choices"
-        :station="station"
-        :alert="alert"
-        :drawer="{ model: drawer }"
-      />
+      <data-navigation :choices="choices" :station="station" :alert="alert" :drawer="{ model: drawer }" />
       <v-main>
         <v-window v-model="tab">
           <v-window-item :value="0">
@@ -64,7 +54,7 @@ export default defineComponent({
         collection: "",
         datastream: "",
         discovery_metadata: "",
-        station: new Set([this.station.id]),
+        station: new Set([this.station]),
         stations: [],
         collections: [],
         datastreams: [],
@@ -79,6 +69,21 @@ export default defineComponent({
     goBack() {
       window.history.length > 1 ? this.$router.go(-1) : this.$router.push("/");
     },
+    async getCollections(data) {
+      var self = this;
+      for (var c of data.collections) {
+        if (c.id === "things") {
+          await this.$http({
+            method: "get",
+            url: oapi + "/collections/things/items",
+          })
+            .then(function (response) {
+              self.choices.stations = response.data.features;
+            })
+            .catch(this.$root.catch);
+        }
+      }
+    }
   },
   watch: {
     "choices.datastream": {
@@ -91,24 +96,18 @@ export default defineComponent({
   },
   async created() {
     this.loading = true;
-    const response = await fetch(oapi + "/collections?f=json");
-    const data = await response.json();
-    for (var c of data.collections) {
-      if (c.id === "stations") {
-        const response = await fetch(
-          oapi + "/collections/stations/items?f=json"
-        );
-        this.choices.stations = await response.json();
-      } else if (c.id === "discovery-metadata") {
-        const response = await fetch(
-          oapi + "/collections/discovery-metadata/items?f=json"
-        );
-        this.choices.discovery_metadata = await response.json();
-      } else if (c.id !== "messages") {
-        this.choices.collections.push(c);
-      }
-    }
-    this.loading = false;
+    var self = this;
+    await this.$http({
+      method: "get",
+      url: oapi + "/collections",
+    })
+      .then(function (response) {
+        self.getCollections(response.data);
+      })
+      .catch(this.$root.catch)
+      .then(function () {
+        self.loading = false;
+      });
   },
 });
 </script>

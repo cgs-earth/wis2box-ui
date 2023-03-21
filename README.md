@@ -1,4 +1,4 @@
-# wis2box-ui
+# hub2box-ui
 
 ## Project setup
 ```
@@ -29,14 +29,14 @@ npm run lint
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ## Multilingual (i18n) Support
-wis2box-ui has multilingual support via [vue i18n](https://vue-i18n.intlify.dev/).
+hub2box-ui has multilingual support via [vue i18n](https://vue-i18n.intlify.dev/).
 
 ### Contributing to i18n
-To add a supported locale to wis2box-ui, create a branch of wis2box-ui and navigate to `wis2box-ui/src/locales/`. From there, create a copy of `_template.json` with the name of the new locale as the name of the file (i.e. `en.json`, `en-US.json`, etc...). Create entries for the empty double quoted fields and submit a pull request back into the main branch. The default language of wis2box-ui is Enligsh (en).
+To add a supported locale to hub2box-ui, create a branch of hub2box-ui and navigate to `wis2box-ui/src/locales/`. From there, create a copy of `_template.json` with the name of the new locale as the name of the file (i.e. `en.json`, `en-US.json`, etc...). Create entries for the empty double quoted fields and submit a pull request back into the main branch. The default language of hub2box-ui is Enligsh (en).
 
 #### To create an entry for German (de):
 ```
-git clone https://github.com/wmo-im/wis2box-ui.git
+git clone https://github.com/cgs-earth/hub2box-ui.git
 cd ./src/locales
 cp _template.json de.json
 ```
@@ -61,7 +61,7 @@ git push origin main
 git tag -a x.y.z -m 'tagging release version x.y.z'
 git push --tags
 
-# publish release on GitHub (https://github.com/wmo-im/wis2box-ui/releases/new)
+# publish release on GitHub (https://github.com/cgs-earth/hub2box-ui/releases/new)
 ```
 
 ### Code Conventions
@@ -70,7 +70,7 @@ git push --tags
 
 ### Bugs and Issues
 
-All bugs, enhancements and issues are managed on [GitHub](https://github.com/wmo-im/wis2box-ui/issues).
+All bugs, enhancements and issues are managed on [GitHub](https://github.com/cgs-earth/hub2box-ui/issues).
 
 ## Contact
 

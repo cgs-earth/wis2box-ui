@@ -60,6 +60,7 @@ export default defineComponent({
       });
 
       // Handle close
+      this.$router.push("/");
       this.onClose();
     },
     onClose() {

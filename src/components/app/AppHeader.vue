@@ -1,23 +1,12 @@
 <template id="app-header">
   <div class="app-header">
-    <v-app-bar flat height="124">
-      <template v-slot:image>
-        <v-container fluid class="pt-0">
-          <v-img height="110" cover :src="banner" :lazy-src="banner" />
-          <v-img cover :src="foot" :lazy-src="foot" />
-        </v-container>
-      </template>
+    <v-app-bar flat height="124" color="#1d3e85">
 
       <template v-slot:default>
-        <v-responsive
-          width="90%"
-          max-width="1130"
-          height="100%"
-          class="mx-auto"
-        >
+        <v-responsive width="90%" max-width="1130" height="100%" class="mx-auto">
           <v-container fluid>
-            <v-row align="start" fill-height>
-              <a :href="wis2" title="wis2box">
+            <v-row fill-height>
+              <a :href="rise" title="hub2box">
                 <img :src="logo" class="pl-6 my-3" />
               </a>
               <v-spacer />
@@ -35,8 +24,6 @@
 import SelectLocale from "./SelectLocale.vue";
 import TokenAuth from "./TokenAuth.vue";
 import logo from "@/assets/img/logo.png";
-import banner from "@/assets/img/wmo-banner.png";
-import foot from "@/assets/img/wmo-foot.png";
 
 import { defineComponent } from "vue";
 
@@ -49,10 +36,8 @@ export default defineComponent({
   },
   data: function () {
     return {
-      wis2: "https://community.wmo.int/activity-areas/wis/wis2-implementation",
+      rise: "https://data.usbr.gov/rise/api",
       logo: logo,
-      banner: banner,
-      foot: foot,
     };
   },
 });

@@ -1,8 +1,9 @@
-export function getNameTime(feature, time_field = "phenomenonTime") {
-  var name = clean(feature.name);
+export function getNameTime(datastream, feature, time_field = "phenomenonTime") {
+  
+  var name = clean(datastream.properties.ObservedProperty.name);
 
-  if (feature[time_field].includes("/")) {
-    const splitTime = feature[time_field].split("/");
+  if (feature.properties[time_field].includes("/")) {
+    const splitTime = feature.properties[time_field].split("/");
     var timeDifference =
       new Date(splitTime[1]).getTime() - new Date(splitTime[0]).getTime();
     var minuteDifference = Math.floor(timeDifference / (1000 * 60));
@@ -39,5 +40,5 @@ export function clean(word) {
 }
 
 export function hasLinks(feature) {
-  return feature && feature.links && feature.links.length > 0;
+  return feature && feature.properties.Datastreams && feature.properties.Datastreams.length > 0;
 }

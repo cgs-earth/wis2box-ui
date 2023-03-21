@@ -10,37 +10,22 @@
       <v-window-item :value="0" eager>
         <station-latest :features="features" :map="map" />
       </v-window-item>
-      <v-window-item :value="1" eager>
-        <station-history :features="features" :map="map" />
-      </v-window-item>
     </v-window>
-    <div class="text-center ma-2">
-      <v-snackbar v-model="snackbar">
-        {{ msg }}
-        <template v-slot:actions>
-          <v-btn color="pink" @click="snackbar = false">
-            <v-icon icon="mdi-close"></v-icon>
-          </v-btn>
-        </template>
-      </v-snackbar>
-    </div>
   </div>
 </template>
 
 <script>
 import { defineComponent } from "vue";
-import StationHistory from "./StationHistory.vue";
 import StationLatest from "./StationLatest.vue";
 
 export default defineComponent({
-  components: { StationLatest, StationHistory },
+  components: { StationLatest },
   name: "StationStatus",
   template: "#station-status",
   props: ["features", "map"],
   data() {
     return {
       features_: this.features,
-      snackbar: false,
       msg: "",
       tab: null,
       data: [],
@@ -59,7 +44,7 @@ export default defineComponent({
         displayModeBar: false,
         responsive: true,
       },
-      tabs: ["station.latest", "station.status"],
+      tabs: ["station.latest"],
     };
   },
   computed: {

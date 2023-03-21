@@ -11,7 +11,8 @@
   "util": {
     "token": "",
     "cancel": "",
-    "save": ""
+    "save": "",
+    "close": ""
   },
   "footer": {
     "powered_by": ""

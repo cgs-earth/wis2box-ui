@@ -3,6 +3,7 @@
 env="
 window.VUE_APP_URL='${WIS2BOX_URL}'\n
 window.VUE_APP_OAPI='${WIS2BOX_API_URL}'\n
+window.VUE_APP_STA='${serviceRootUrl}'\n
 window.VUE_APP_MQTT='${WIS2BOX_MQTT_URL}'\n
 window.VUE_APP_WAF='${WIS2BOX_URL}/data/'\n
 window.VUE_APP_BASEMAP_URL='${WIS2BOX_BASEMAP_URL:-https://\{s\}.tile.openstreetmap.org/\{z\}/\{x\}/\{y\}.png}'\n

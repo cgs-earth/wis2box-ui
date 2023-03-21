@@ -62,7 +62,7 @@ export default defineComponent({
         color = "#004D00";
       }
       const markerStyle = {
-        radius: 4,
+        radius: 6,
         fillColor: fillColor,
         color: color,
         weight: 1,

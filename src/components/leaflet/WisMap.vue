@@ -5,42 +5,17 @@
     </div>
     <div class="text-center">
       <v-row justify="center" fill-height no-gutters>
-        <v-col :cols="smAndDown ? 12 : 4" :order="smAndDown ? 'last' : 'start'">
+        <v-col :cols="smAndDown ? 12 : 5" :order="smAndDown ? 'last' : 'start'">
           <station-info :features="features" :map="map" class="ma-1" />
         </v-col>
-        <v-col :cols="smAndDown ? 12 : 8">
+        <v-col :cols="smAndDown ? 12 : 7">
           <v-card class="ma-1">
             <p>
-              <l-map
-                ref="wisMap"
-                :zoom="zoom"
-                :center="center"
-                maxZoom="16"
-                minZoom="2"
-                style="height: 60vh"
-                @ready="onReady()"
-              >
+              <l-map ref="wisMap" :zoom="zoom" :center="center" maxZoom="16" minZoom="2" style="height: 60vh"
+                @ready="onReady()">
                 <wis-station :features="features" :map="map" />
+                <l-geo-json :geojson="path" />
                 <l-tile-layer :url="url" :attribution="attribution" />
-                <l-control position="bottomleft">
-                  <v-card width="124px" class="legend pa-2" border="1">
-                    <strong> {{ $t("messages.no_of_observations") }} </strong>
-                    <v-divider class="my-2" />
-                    <v-row
-                      no-gutters
-                      justify="center"
-                      v-for="(item, i) in legend"
-                      :key="i"
-                    >
-                      <v-col cols="3">
-                        <i class="dot" :style="`background: ${item.color}`" />
-                      </v-col>
-                      <v-col>
-                        {{ item.range }}
-                      </v-col>
-                    </v-row>
-                  </v-card>
-                </l-control>
               </l-map>
             </p>
           </v-card>
@@ -53,7 +28,7 @@
 <script>
 import "leaflet/dist/leaflet.css";
 import { geoJSON } from "leaflet/dist/leaflet-src.esm";
-import { LControl, LMap, LTileLayer } from "@vue-leaflet/vue-leaflet";
+import { LGeoJson, LMap, LTileLayer } from "@vue-leaflet/vue-leaflet";
 
 import WisStation from "../station/WisStation.vue";
 import StationInfo from "../station/StationInfo.vue";
@@ -65,7 +40,7 @@ export default defineComponent({
   name: "WisMap",
   template: "#wis-map",
   components: {
-    LControl,
+    LGeoJson,
     LMap,
     LTileLayer,
     WisStation,
@@ -74,6 +49,7 @@ export default defineComponent({
   props: ["params", "features"],
   data: function () {
     return {
+      path: null,
       numberMatched: 0,
       limit_: null,
       vals: {
@@ -129,27 +105,30 @@ export default defineComponent({
         this.map = this.$refs.wisMap.leafletObject;
         this.map.attributionControl.setPrefix("");
         this.map.zoomControl.setPosition("topright");
+        this.loadPath();
         this.loadStations();
       });
+    },
+    async loadPath() {
+      const response = await fetch("https://merit.internetofwater.app/processes/river-runner/execution?lng=-105.82&lat=40.24&groupby=nameid,streamlev,levelpathi&sorted=downstream");
+      const data = await response.json();
+      this.path = await data.value;
     },
     async loadStations() {
       this.loading = true;
       var self = this;
       await this.$http({
-        method: "post",
-        url: `${oapi}/processes/station-info/execution`,
-        data: { inputs: self.params },
+        method: "get",
+        url: `${oapi}/collections/things/items`,
       })
         .then(function (response) {
-          self.features_.stations = response.data.value;
+          self.features_.stations = response.data;
           self.numberMatched = response.data.numberMatched;
-        })
-        .catch(function (error) {
-          console.log(error);
-        })
-        .then(function () {
-          var bounds_ = geoJSON(self.features_.stations).getBounds();
+          var bounds_ = geoJSON(response.data).getBounds();
           self.map.fitBounds(bounds_);
+        })
+        .catch(this.$root.catch)
+        .then(function () {
           self.loading = false;
           setTimeout(self.loadStations, 900000);
         });

@@ -46,7 +46,7 @@ export default defineComponent({
     this.$nextTick(() => {
       if (this.choices_.collection !== "" && this.choices_.datastream !== "") {
         for (var station of this.choices_.station) {
-          this.loadCollection(this.choices_.collection, station);
+          this.loadCollection("observations", station);
         }
       }
     });
@@ -61,7 +61,7 @@ export default defineComponent({
         if (newValue.collection !== "" && newValue.datastream !== "") {
           this.data = {};
           for (var station of this.choices_.station) {
-            this.loadCollection(newValue.collection, station);
+            this.loadCollection("observations", station);
           }
         }
         this.loading = false;
@@ -135,50 +135,38 @@ export default defineComponent({
         });
       }
     },
-    async loadCollection(collection, station_id) {
-      const title = collection.description;
+    async loadCollection(collection_id, station) {
       const datastream = this.choices_.datastream;
 
       this.alert_.msg =
-        station_id + this.$t("messages.no_observations_in_collection") + title;
+        station.id + this.$t("messages.no_observations_in_collection");
 
       this.loading = true;
       var self = this;
 
       await this.$http({
         method: "get",
-        url: `${oapi}/collections/${collection.id}/items`,
+        url: `${oapi}/collections/${collection_id}/items`,
         params: {
           f: "json",
-          name: datastream.id,
-          index: datastream.index,
-          wigos_station_identifier: station_id,
+          Datastream: datastream.id,
           resulttype: "hits",
         },
       })
         .then(function (response) {
           // handle success
           self.loadObservations(
-            collection.id,
+            collection_id,
             response.data.numberMatched,
-            datastream,
-            station_id
+            datastream
           );
         })
-        .catch(function (error) {
-          // handle error
-          if (error.response.status === 401) {
-            self.alert_.msg = self.$t("messages.not_authorized");
-            self.alert_.value = true;
-          }
-          console.log(error);
-          self.loading = false;
-        })
+        .catch(this.$root.catch)
         .then(function () {
           console.log("done");
         });
     },
-    async loadObservations(collection_id, limit, datastream, station_id) {
+    async loadObservations(collection_id, limit, datastream) {
       if (limit === 0) {
         this.alert_.value = true;
         this.loading = false;
@@ -191,9 +179,7 @@ export default defineComponent({
           url: `${oapi}/collections/${collection_id}/items`,
           params: {
             f: "json",
-            name: datastream.id,
-            index: datastream.index,
-            wigos_station_identifier: station_id,
+            Datastream: datastream.id,
             sortby: "-resultTime",
             limit: limit,
           },
@@ -201,26 +187,15 @@ export default defineComponent({
           .then(function (response) {
             // handle success
             self.plot(response.request.responseURL);
-            if (datastream.units === "CODE TABLE") {
-              self.title = `${datastream.name}`;
-              self.data.value = self.getCol(
-                response.data.features,
-                "description"
-              );
-            } else {
-              self.title = `${datastream.name} (${datastream.units})`;
-              self.data.value = self.getCol(response.data.features, "value");
-            }
+            self.title = `${datastream.name} (${datastream.units})`;
+            self.data.value = self.getCol(response.data.features, "result");
             self.data.time = self.getCol(response.data.features, "resultTime");
             self.data.phenomenonTime = self.getCol(
               response.data.features,
               "phenomenonTime"
             );
           })
-          .catch(function (error) {
-            // handle error
-            console.log(error);
-          })
+          .catch(this.$root.catch)
           .then(function () {
             self.loading = false;
             console.log("done");
@@ -254,6 +229,7 @@ export default defineComponent({
 tr:nth-child(odd) {
   background-color: #eeeeee;
 }
+
 th,
 td {
   padding: 8px;

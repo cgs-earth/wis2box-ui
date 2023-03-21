@@ -33,7 +33,7 @@ export default defineComponent({
           this.data = [];
           this.config.modeBarButtonsToAdd = [];
           for (var station of this.choices_.station) {
-            this.loadCollection(newValue.collection, station);
+            this.loadCollection('observations', station);
           }
         }
         this.loading = false;
@@ -131,56 +131,43 @@ export default defineComponent({
       Trace.x = this.getCol(features, x);
       Trace.y = this.getCol(features, y);
       this.data.push(Trace);
-
       const Scatter = JSON.parse(JSON.stringify(this.scatter));
       Scatter.x = this.getCol(features, x);
       Scatter.y = this.getCol(features, y);
       this.data.push(Scatter);
       this.setDateLayout(features[features.length - 1]);
     },
-    async loadCollection(collection, station_id) {
+    async loadCollection(collection_id, station) {
       this.loading = true;
       var self = this;
-      const title = collection.description;
       const datastream = this.choices_.datastream;
 
       this.alert_.msg =
-        station_id + this.$t("messages.no_observations_in_collection") + title;
+        station.id + this.$t("messages.no_observations_in_collection");
 
       await this.$http({
         method: "get",
-        url: `${oapi}/collections/${collection.id}/items`,
+        url: `${oapi}/collections/${collection_id}/items`,
         params: {
           f: "json",
-          name: datastream.id,
-          index: datastream.index,
-          wigos_station_identifier: station_id,
+          Datastream: datastream.id,
           resulttype: "hits",
         },
       })
         .then(function (response) {
           // handle success
           self.loadObservations(
-            collection.id,
+            collection_id,
             response.data.numberMatched,
-            datastream,
-            station_id
+            datastream
           );
         })
-        .catch(function (error) {
-          // handle error
-          if (error.response.status === 401) {
-            self.alert_.msg = self.$t("messages.not_authorized");
-            self.alert_.value = true;
-          }
-          console.log(error);
-          self.loading = false;
-        })
+        .catch(this.$root.catch)
         .then(function () {
           console.log("done");
         });
     },
-    async loadObservations(collection_id, limit, datastream, station_id) {
+    async loadObservations(collection_id, limit, datastream) {
       if (limit === 0) {
         this.alert_.value = true;
         this.loading = false;
@@ -193,9 +180,7 @@ export default defineComponent({
           url: `${oapi}/collections/${collection_id}/items`,
           params: {
             f: "json",
-            name: datastream.id,
-            index: datastream.index,
-            wigos_station_identifier: station_id,
+            Datastream: datastream.id,
             sortby: "-resultTime",
             limit: limit,
           },
@@ -218,17 +203,14 @@ export default defineComponent({
                 window.location.href = `${dataURL}&datetime=${timeExtent}`;
               },
             });
-            self.newTrace(resp.data.features, "resultTime", "value");
+            self.newTrace(resp.data.features, "resultTime", "result");
             self.layout.yaxis.title = datastream.units;
             self.layout.title = datastream.name;
             self.plot();
           })
-          .catch(function (error) {
-            // handle error
-            console.log(error);
-            self.loading = false;
-          })
+          .catch(this.$root.catch)
           .then(function () {
+            self.loading = false;
             console.log("done");
           });
       }

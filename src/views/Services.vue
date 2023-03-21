@@ -4,12 +4,7 @@
       <v-card class="text-center pa-4" width="60%">
         <v-row v-for="(v, k) in services" :key="k">
           <v-col>{{ k }}</v-col>
-          <v-col v-if="k == 'MQTT'"
-            >{{ v }}</v-col
-          >
-          <v-col v-else
-            ><a :target="k" :title="k" :href="v">{{ v }}</a></v-col
-          >
+          <v-col><a :target="k" :title="k" :href="v">{{ v }}</a></v-col>
           <v-divider />
         </v-row>
       </v-card>
@@ -25,7 +20,7 @@ export default {
     return {
       services: {
         API: window.VUE_APP_OAPI,
-        MQTT: window.VUE_APP_MQTT,
+        STA: window.VUE_APP_STA,
         WAF: window.VUE_APP_WAF,
       },
     };

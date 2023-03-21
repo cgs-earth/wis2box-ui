@@ -6,12 +6,9 @@
     <v-table>
       <table>
         <tr v-for="(item, i) in recentObservations" :key="i">
-          <th width="50%">{{ getNameTime(item) }}</th>
-          <td v-if="item.units !== 'CODE TABLE'" width="50%">
-            {{ item.value + " " + item.units }}
-          </td>
-          <td v-else-if="item.units === 'CODE TABLE'" width="50%">
-            {{ item.description }}
+          <th width="50%">{{ getNameTime(item[0], item[1]) }}</th>
+          <td width="50%">
+            {{ item[1].properties.result + " " + item[0].properties.unitOfMeasurement.symbol }}
           </td>
         </tr>
       </table>
@@ -21,9 +18,8 @@
 
 <script>
 import { defineComponent } from "vue";
-let oapi = window.VUE_APP_OAPI;
 
-import { getNameTime, clean, hasLinks } from "@/scripts/helpers.js";
+import { getNameTime } from "@/scripts/helpers.js";
 
 export default defineComponent({
   name: "StationLatest",
@@ -39,18 +35,10 @@ export default defineComponent({
   watch: {
     "features_.station": {
       async handler(station) {
-        this.latestResultTime = null;
-        this.recentObservations = [];
-        if (hasLinks(station)) {
+        if (station !== null) {
+          this.latestResultTime = null;
+          this.recentObservations = [];
           this.loadObservations(station);
-        } else if (station !== null) {
-          this.msg = `
-            ${clean(station.properties.name)} ${this.$t(
-            "messages.no_linked_collections"
-          )}. ${this.$t("messages.how_to_link_station")}`;
-          this.snackbar = true;
-          this.loading = false;
-          this.tab = null;
         }
       },
     },
@@ -59,54 +47,38 @@ export default defineComponent({
     getNameTime,
     async loadObservations(station) {
       var self = this;
-      await this.$http({
-        method: "get",
-        url: oapi + "/collections/" + station.properties.topic + "/items",
-        params: {
-          f: "json",
-          sortby: "-resultTime",
-          wigos_station_identifier: station.id,
-          limit: 1,
-        },
-      })
-        .then(function (response) {
-          // handle success
-          self.latestResultTime =
-            response.data.features[0].properties.resultTime;
-          self.loadRecentObservations(station, response.data.numberMatched);
+      for (const datastream of station.properties.Datastreams) {
+        await this.$http({
+          method: "get",
+          url: datastream,
         })
-        .catch(function (error) {
-          // handle error
-          console.log(error);
-          if (error.response.status === 401) {
-            self.msg = self.$t("messages.not_authorized");
-            self.snackbar = true;
-          }
-        })
-        .then(function () {
-          self.tab = 0;
-          self.loading = false;
-          console.log("done");
-        });
+          .then(function (response) {
+            // handle success
+            self.loadRecentObservations(response.data);
+          })
+          .catch(this.$root.catch)
+          .then(function () {
+            self.tab = 0;
+            self.loading = false;
+            console.log("done");
+          });
+      }
     },
-    async loadRecentObservations(station, limit) {
+    async loadRecentObservations(datastream) {
       this.loading = true;
       var self = this;
+      if (datastream.properties.Observations.length === 0) {
+        return
+      }
       await this.$http({
         method: "get",
-        url: oapi + "/collections/" + station.properties.topic + "/items",
-        params: {
-          f: "json",
-          datetime: `${self.latestResultTime}/..`,
-          wigos_station_identifier: station.id,
-          limit: limit,
-        },
+        url: datastream.properties.Observations[0]
       }).then(function (response) {
         // handle success
-        self.recentObservations = response.data.features.map(
-          (obs) => obs.properties
-        );
-      });
+        self.latestResultTime = response.data.properties.resultTime;
+        self.recentObservations.push([datastream, response.data]);
+      })
+        .catch(this.$root.catch);
     },
   },
 });
@@ -116,6 +88,7 @@ export default defineComponent({
 tr:nth-child(odd) {
   background-color: #eeeeee;
 }
+
 th,
 td {
   padding: 8px;

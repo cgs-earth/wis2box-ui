@@ -15,22 +15,9 @@
             </template>
 
             <template v-slot:title>
-              <h4 class="ml-1 text-left" v-text="clean(s.properties.name)" />
+              <h4 class="ml-3 text-left" v-text="s.properties.name" />
             </template>
 
-            <template v-slot:append>
-              <v-btn
-                variant="outlined"
-                size="small"
-                color="#014e9e"
-                :target="s.id"
-                :title="s.id"
-                :href="s.properties.url"
-              >
-                OSCAR
-                <v-icon end icon="mdi-open-in-new" />
-              </v-btn>
-            </template>
           </v-list-item>
           <v-divider v-if="i + 1 < stations.length" />
         </template>

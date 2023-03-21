@@ -4,7 +4,7 @@
   </div>
   <div class="map" :style="{ opacity: $root.dialog ? '0' : '1' }">
     <v-card flat>
-      <wis-map :features="features" :params="{ collection: topic }" />
+      <wis-map :features="features" />
     </v-card>
   </div>
 </template>
@@ -20,7 +20,6 @@ export default {
     ChartDialog,
     WisMap,
   },
-  props: ["topic"],
   data: function () {
     return {
       features: {

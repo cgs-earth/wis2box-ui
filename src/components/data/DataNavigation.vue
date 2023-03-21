@@ -1,29 +1,14 @@
 <template id="data-navigation">
   <div class="data-navigation">
     <v-navigation-drawer v-model="drawer_" bottom absolute class="text-center">
-      <v-list-item-subtitle
-        class="mt-2"
-        v-html="$t('chart.observed_property')"
-      />
+      <v-list-item-subtitle class="mt-2" v-html="$t('chart.observed_property')" />
       <v-list nav>
-        <template
-          v-for="(item, i) in choices.datastreams"
-          :key="i"
-          class="mr-3"
-        >
-          <v-list-item
-            :value="i"
-            active-color="#014e9e"
-            :active="model === i"
-            class="text-left text-body-2"
-            @click="updateData(item, i)"
-          >
-            {{ getNameTime(item) }}
+        <template v-for="(item, i) in choices.datastreams" :key="i" class="mr-3">
+          <v-list-item :value="i" active-color="#014e9e" :active="model === i" class="text-left text-body-2"
+            @click="updateData(item, i)">
+            {{ getNameTime(item[0], item[1]) }}
           </v-list-item>
-          <v-divider
-            class="pb-1 mx-2"
-            v-if="i < choices.datastreams.length - 1"
-          />
+          <v-divider class="pb-1 mx-2" v-if="i < choices.datastreams.length - 1" />
         </template>
       </v-list>
     </v-navigation-drawer>
@@ -31,7 +16,6 @@
 </template>
 
 <script>
-let oapi = window.VUE_APP_OAPI;
 import { getNameTime, hasLinks } from "@/scripts/helpers.js";
 
 export default {
@@ -50,14 +34,19 @@ export default {
       return this.drawer.model;
     },
   },
+  mounted: function () {
+    if (hasLinks(this.station)) {
+      for (const item of this.station.properties.Datastreams) {
+        this.updateCollection(item);
+      }
+    }
+  },
   watch: {
-    "choices.collections": {
-      handler(c) {
-        if (hasLinks(this.station)) {
-          for (const item of c) {
-            if (this.station.properties.topic === item.id) {
-              this.updateCollection(item);
-            }
+    "choices.station": {
+      handler(station) {
+        if (hasLinks(station)) {
+          for (const item of station.properties.Datastreams) {
+            this.updateCollection(item);
           }
         }
       },
@@ -66,75 +55,43 @@ export default {
   },
   methods: {
     getNameTime,
-    async updateCollection(newC) {
+    async updateCollection(collection_url) {
       this.alert_value = false;
-      this.choices_.collection = newC;
+      this.choices_.collection = collection_url;
       var self = this;
       await this.$http({
         method: "get",
-        url: `${oapi}/collections/${newC.id}/items`,
-        params: {
-          wigos_station_identifier: self.station.id,
-          properties: "resultTime",
-          sortby: "-resultTime",
-          f: "json",
-          limit: 1,
-        },
+        url: collection_url,
       })
         .then(function (response) {
           // handle success
-          self.fetchCollectionItems(
-            `${newC.id}`,
-            response.data.features[0].properties.resultTime,
-            response.data.numberMatched
-          );
+          self.getCollectionItem(response.data)
         })
-        .catch(function (error) {
-          // handle error
-          if (error.response.status === 401) {
-            self.alert_.msg = self.$t("messages.not_authorized");
-            self.alert_.value = true;
-          }
-          console.log(error);
-          self.loading = false;
-        })
+        .catch(this.$root.catch)
         .then(function () {
           console.log("done");
         });
     },
-    async fetchCollectionItems(collection_id, resultTime, limit) {
+    async getCollectionItem(datastream) {
+      if (datastream.properties.Observations.length === 0) {
+        return
+      }
       var self = this;
       await this.$http({
         method: "get",
-        url: `${oapi}/collections/${collection_id}/items`,
-        params: {
-          wigos_station_identifier: self.station.id,
-          datetime: `${resultTime}/..`,
-          f: "json",
-          limit: limit,
-        },
+        url: datastream.properties.Observations[0]
       })
         .then(function (response) {
-          // handle success
-          for (const item of response.data.features) {
-            self.choices_.datastreams.push(item.properties);
-          }
+          self.choices_.datastreams.push([datastream, response.data]);
         })
-        .catch(function (error) {
-          // handle error
-          console.log(error);
-          self.loading = false;
-        })
-        .then(function () {
-          console.log("done");
-        });
     },
     updateData(newD, index) {
       this.choices_.datastream = {
-        id: newD.name,
-        index: newD.index,
-        name: getNameTime(newD),
-        units: newD.units,
+        title: newD[0].properties.name,
+        index: index,
+        id: newD[0].id,
+        name: getNameTime(newD[0], newD[1]),
+        units: newD[0].properties.unitOfMeasurement.symbol,
       };
       this.model = index;
     },

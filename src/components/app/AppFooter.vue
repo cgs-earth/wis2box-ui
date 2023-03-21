@@ -1,14 +1,11 @@
 <template id="app-footer">
   <div class="app-footer">
-    <v-footer flat height="110">
-      <v-row justify="center">
-        <v-col cols="12">
-          <v-img cover :src="foot" :lazy-src="foot" />
-        </v-col>
+    <v-footer flat height="110" color="#1d3e85">
+      <v-row justify="center" align="center">
         <v-col class="primary text-center" cols="12">
-          <p>
+          <p style="color:white;">
             {{ $t("footer.powered_by") }}
-            <a :title="name" :href="home" v-html="name" />
+            <v-btn variant="plain" size="small" color="white" :title="name" :href="home" v-html="name" />
             {{ version }}
           </p>
         </v-col>
@@ -18,7 +15,6 @@
 </template>
 
 <script>
-import foot from "@/assets/img/wmo-foot.png";
 import { name, version, homepage } from "../../../package";
 
 import { defineComponent } from "vue";
@@ -31,7 +27,6 @@ export default defineComponent({
       version: version,
       name: name,
       home: homepage,
-      foot: foot,
     };
   },
 });
