@@ -3,6 +3,19 @@
     <div v-if="loading">
       <v-progress-linear striped indeterminate color="primary" />
     </div>
+
+    <v-toolbar>
+      <v-toolbar-title>
+        {{ station_name || $t("chart.station") }}
+      </v-toolbar-title>
+
+      <template v-slot:prepend>
+        <v-btn :disabled="station === null" icon @click="features_.station = null">
+          <v-icon icon="mdi-arrow-left" />
+        </v-btn>
+      </template>
+    </v-toolbar>
+
     <div class="text-center">
       <v-row justify="center" fill-height no-gutters>
         <v-col :cols="smAndDown ? 12 : 5" :order="smAndDown ? 'last' : 'start'">
@@ -97,6 +110,16 @@ export default defineComponent({
     },
     smAndDown: function () {
       return this.$vuetify.display.smAndDown;
+    },
+    station: function () {
+      return this.features_.station;
+    },
+    station_name: function () {
+      if (this.station) {
+        return this.station.properties.name;
+      } else {
+        return this.station;
+      }
     },
   },
   methods: {

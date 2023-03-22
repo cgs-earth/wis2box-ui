@@ -1,8 +1,13 @@
 <template id="station-status">
   <div class="station-status">
     <v-tabs grow v-model="tab" color="#014e9e">
-      <v-tab v-for="(item, i) in tabs" :value="i" :key="i">
-        {{ $t(item) }}
+      <v-tab :value="0">
+        {{ $t("station.latest") }}
+        <v-icon end icon="mdi-history" />
+      </v-tab>
+      <v-tab @click.stop="openData(station)">
+        {{ $t("navigation.data") }}
+        <v-icon end icon="mdi-chart-scatter-plot" />
       </v-tab>
     </v-tabs>
     <v-divider />
@@ -44,19 +49,17 @@ export default defineComponent({
         displayModeBar: false,
         responsive: true,
       },
-      tabs: ["station.latest"],
     };
   },
   computed: {
     station: function () {
       return this.features_.station;
     },
-    station_name: function () {
-      if (this.station) {
-        return this.station.properties.name;
-      } else {
-        return this.station;
-      }
+  },
+  methods: {
+    openData(station) {
+      this.features_.station = station;
+      this.$root.toggleDialog();
     },
   },
 });

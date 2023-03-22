@@ -32,7 +32,7 @@
     "wigos_station_identifier": "WIGOS station identifier",
     "name": "Station name",
     "status": "History",
-    "latest": "Latest values",
+    "latest": "Latest",
     "report": "Station report",
     "limit": "Limit"
   },

@@ -5,7 +5,7 @@
         <v-col class="primary text-center" cols="12">
           <p style="color:white;">
             {{ $t("footer.powered_by") }}
-            <v-btn variant="plain" size="small" color="white" :title="name" :href="home" v-html="name" />
+            <a style="color:white;" :title="name" :href="home" v-html="name" />
             {{ version }}
           </p>
         </v-col>

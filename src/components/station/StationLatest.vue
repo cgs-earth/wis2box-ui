@@ -1,14 +1,15 @@
 <template id="station-status">
   <div class="station-status">
-    <h5 class="text-left">
-      {{ $t("messages.from") + " " + latestResultTime }}
-    </h5>
     <v-table>
       <table>
         <tr v-for="(item, i) in recentObservations" :key="i">
           <th width="50%">{{ getNameTime(item[0], item[1]) }}</th>
           <td width="50%">
             {{ item[1].properties.result + " " + item[0].properties.unitOfMeasurement.symbol }}
+            <br>
+            <div class="text-caption">
+              {{ $t("messages.from") + " " + item[1].properties.resultTime }}
+            </div>
           </td>
         </tr>
       </table>
@@ -29,14 +30,12 @@ export default defineComponent({
     return {
       features_: this.features,
       recentObservations: [],
-      latestResultTime: null,
     };
   },
   watch: {
     "features_.station": {
       async handler(station) {
         if (station !== null) {
-          this.latestResultTime = null;
           this.recentObservations = [];
           this.loadObservations(station);
         }
@@ -75,7 +74,6 @@ export default defineComponent({
         url: datastream.properties.Observations[0]
       }).then(function (response) {
         // handle success
-        self.latestResultTime = response.data.properties.resultTime;
         self.recentObservations.push([datastream, response.data]);
       })
         .catch(this.$root.catch);
