@@ -5,14 +5,16 @@
         <template v-slot:prepend v-if="$vuetify.display.smAndDown">
           <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
         </template>
-        <v-toolbar-title v-show="$vuetify.display.mdAndUp" class="pa-2 text-h6">
-          {{ choices.collection.description || $t("chart.collection") }}
-        </v-toolbar-title>
+        <v-toolbar-title v-html="station.properties.name" />
+        <v-spacer />
         <v-tabs v-model="tab" end color="#014e9e">
           <v-tab v-for="(item, i) in tabs" class="text-center pa-2" :value="i" :key="i">
             {{ $t(item) }}
           </v-tab>
         </v-tabs>
+        <v-btn varaint="text" color="pink" icon @click="$root.toggleDialog">
+          <v-icon icon="mdi-close" />
+        </v-btn>
       </v-app-bar>
       <data-navigation :choices="choices" :station="station" :alert="alert" :drawer="{ model: drawer }" />
       <v-main>

@@ -4,8 +4,7 @@
       <v-list-item-subtitle class="mt-2" v-html="$t('chart.observed_property')" />
       <v-list nav>
         <template v-for="(item, i) in choices.datastreams" :key="i" class="mr-3">
-          <v-list-item :value="i" active-color="#014e9e" :active="model === i" class="text-left text-body-2"
-            @click="updateData(item, i)">
+          <v-list-item :value="i" active-color="#014e9e" :active="model === i" @click="updateData(item, i)">
             {{ getNameTime(item[0], item[1]) }}
           </v-list-item>
           <v-divider class="pb-1 mx-2" v-if="i < choices.datastreams.length - 1" />
@@ -84,6 +83,7 @@ export default {
         .then(function (response) {
           self.choices_.datastreams.push([datastream, response.data]);
         })
+        .catch(this.$root.catch)
     },
     updateData(newD, index) {
       this.choices_.datastream = {

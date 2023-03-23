@@ -41,7 +41,6 @@ export default {
   data() {
     return {
       msg: '',
-      snackbar: false,
       dialog: false,
     };
   },
@@ -50,7 +49,6 @@ export default {
       this.dialog = this.dialog === true ? false : true;
     },
     catch: function (error) {
-      this.msg = '';
       if (error.response.status === 401) {
         this.msg = this.t("messages.not_authorized");
       } else {

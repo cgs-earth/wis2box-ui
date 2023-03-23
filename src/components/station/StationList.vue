@@ -3,13 +3,8 @@
     <v-list lines="3">
       <v-hover v-slot="{ isHovering, props }">
         <template v-for="(s, i) in stations" :key="i">
-          <v-list-item
-            v-bind="props"
-            height="50"
-            :class="{ 'on-hover': isHovering }"
-            @click="onClick(s)"
-            @mouseover="onHover(s)"
-          >
+          <v-list-item v-bind="props" height="50" :class="{ 'on-hover': isHovering }" @click="onClick(s)"
+            @mouseover="onHover(s)">
             <template v-slot:prepend>
               <i class="dot" :style="`background: ${getColor(s)}`" />
             </template>
@@ -27,6 +22,8 @@
 </template>
 
 <script>
+let oapi = window.VUE_APP_OAPI;
+
 import { defineComponent } from "vue";
 
 import { clean } from "@/scripts/helpers.js";
@@ -75,7 +72,9 @@ export default defineComponent({
         station.geometry.coordinates[1],
         station.geometry.coordinates[0],
       ];
-      this.map.openPopup(station.properties.name, latlng);
+      var url = `${oapi}/collections/things/items/${station.id}`;
+      var content = `<a title="${station.id}" href="${url}">${station.properties.name}</a>`;
+      this.map.openPopup(content, latlng);
     },
     getColor(station) {
       let hits = station.properties.num_obs;

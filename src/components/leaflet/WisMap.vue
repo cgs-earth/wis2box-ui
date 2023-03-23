@@ -128,14 +128,8 @@ export default defineComponent({
         this.map = this.$refs.wisMap.leafletObject;
         this.map.attributionControl.setPrefix("");
         this.map.zoomControl.setPosition("topright");
-        this.loadPath();
         this.loadStations();
       });
-    },
-    async loadPath() {
-      const response = await fetch("https://merit.internetofwater.app/processes/river-runner/execution?lng=-105.82&lat=40.24&groupby=nameid,streamlev,levelpathi&sorted=downstream");
-      const data = await response.json();
-      this.path = await data.value;
     },
     async loadStations() {
       this.loading = true;

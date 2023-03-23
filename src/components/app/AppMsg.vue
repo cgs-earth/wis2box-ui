@@ -1,12 +1,14 @@
 
 <template id="app-msg">
   <div class="app-msg">
-    <v-snackbar v-model="snackbar">
-      {{ msg }}
-      <template v-slot:actions>
-        <v-btn color="pink" size="small" variant="text" @click="snackbar = false" v-html="$t('util.close')" />
-      </template>
-    </v-snackbar>
+    <v-dialog v-model="snackbar" width="auto">
+      <v-card>
+        <v-card-text v-html="msg" />
+        <v-card-actions>
+          <v-btn color="pink" block @click="close()" v-html="$t('util.close')" />
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -19,12 +21,23 @@ export default defineComponent({
   props: ["msg"],
   data: function () {
     return {
-      snackbar: false
+      snackbar: false,
     }
   },
   watch: {
     msg: function () {
-      this.snackbar = !this.snackbar;
+      this.open();
+    }
+  },
+  methods: {
+    close() {
+      this.snackbar = false;
+      this.$root.msg = '';
+    },
+    open() {
+      if (this.msg !== '') {
+        this.snackbar = true;
+      }
     }
   }
 })

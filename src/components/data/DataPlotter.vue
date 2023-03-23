@@ -1,6 +1,6 @@
 <template id="data-plotter">
   <div class="data-plotter">
-    <v-card min-height="500px" class="ma-4">
+    <v-card min-height="450px" class="ma-4">
       <v-alert v-show="alert.value" type="warning" v-html="alert.msg" />
 
       <div :style="{ visibility: loading ? 'visible' : 'hidden' }">

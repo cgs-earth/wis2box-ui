@@ -1,14 +1,12 @@
 <template id="wis-station">
   <div class="wis-station">
-    <l-geo-json
-      :geojson="stations"
-      :options="geojsonOptions"
-      @click="mapClick"
-    ></l-geo-json>
+    <l-geo-json :geojson="stations" :options="geojsonOptions" @click="mapClick" />
   </div>
 </template>
 
 <script>
+let oapi = window.VUE_APP_OAPI;
+
 import { circleMarker } from "leaflet/dist/leaflet-src.esm";
 import { LGeoJson } from "@vue-leaflet/vue-leaflet";
 
@@ -39,32 +37,18 @@ export default defineComponent({
     },
     onEachFeature(feature, layer) {
       var self = this;
+      var url = `${oapi}/collections/things/items/${feature.id}`;
+      var content = `<a title="${feature.id}" href="${url}">${feature.properties.name}</a>`;
       layer.on("mouseover", function (e) {
         self.features_.station = feature;
-        layer.bindPopup(feature.properties.name).openPopup(e.latLng);
+        layer.bindPopup(content).openPopup(e.latLng);
       });
     },
     pointToLayer(feature, latLng) {
-      let fillColor;
-      let color;
-      let hits = feature.properties.num_obs;
-      if (hits === 0) {
-        fillColor = "#708090";
-        color = "#2E343B";
-      } else if (hits <= 7) {
-        fillColor = "#FF3300";
-        color = "#801A00";
-      } else if (hits <= 19) {
-        fillColor = "#FF9900";
-        color = "#804D00";
-      } else {
-        fillColor = "#009900";
-        color = "#004D00";
-      }
       const markerStyle = {
-        radius: 6,
-        fillColor: fillColor,
-        color: color,
+        radius: 4,
+        fillColor: "#009900",
+        color: "#004D00",
         weight: 1,
         opacity: 1,
         fillOpacity: 0.8,
