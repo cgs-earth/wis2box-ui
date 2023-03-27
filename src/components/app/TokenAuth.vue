@@ -2,21 +2,12 @@
   <div class="token-auth">
     <v-menu v-model="menu" :close-on-content-click="false">
       <template v-slot:activator="{ props }">
-        <v-btn
-          color="#FFFFFF"
-          class="font-weight-bold"
-          v-bind="props"
-          v-html="$t('util.token')"
-        />
+        <v-btn v-if="header" color="#FFFFFF" class="font-weight-bold" v-bind="props" v-html="$t('util.token')" />
+        <v-btn v-else color="#1d3e85" v-bind="props" v-html="$t('util.token')" />
       </template>
       <v-card>
         <v-card-text>
-          <v-text-field
-            v-model="token"
-            type="password"
-            single-line
-            hide-details
-          />
+          <v-text-field v-model="token" type="password" single-line hide-details />
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -29,43 +20,32 @@
 </template>
 
 <script>
-let oapi = window.VUE_APP_OAPI;
-
 import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "TokenAuth",
   template: "#token-auth",
+  props: ["header"],
   data() {
-    return { token: "", token_: "", menu: false, interceptor: null };
+    return { token: "", menu: false };
   },
   mounted() {
     this.saveToken();
   },
+  watch: {
+    "$root.token": function (token) {
+      this.token = token;
+    }
+  },
   methods: {
     saveToken() {
       // Save token
-      this.token_ = this.token;
-      var self = this;
-
-      // Clear headers and apply token
-      const interceptors = this.axios.interceptors.request;
-      if (this.interceptor !== null) {
-        interceptors.eject(this.interceptor);
-      }
-      this.interceptor = interceptors.use(function (config) {
-        config.headers = { Authorization: `Bearer ${self.token_}` };
-        config.baseURL = oapi;
-        return config;
-      });
-
-      // Handle close
-      this.$router.push("/");
+      this.$root.token = this.token;
       this.onClose();
     },
     onClose() {
       // Reset token and close menu
-      this.token = this.token_;
+      this.token = this.$root.token;
       this.menu = false;
     },
   },

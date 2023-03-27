@@ -17,7 +17,7 @@
       </v-responsive>
     </v-main>
 
-    <app-msg app class="pb-4" :msg="msg" />
+    <app-msg app class="pb-4" :error="error" />
 
     <app-footer app class="pt-4" />
   </v-app>
@@ -28,6 +28,8 @@ import AppFooter from "@/components/app/AppFooter.vue";
 import AppHeader from "@/components/app/AppHeader.vue";
 import AppMsg from "@/components/app/AppMsg.vue";
 import AppNav from "@/components/app/AppNav.vue";
+
+let oapi = window.VUE_APP_OAPI;
 
 import { useI18n } from "vue-i18n";
 
@@ -40,19 +42,47 @@ export default {
   },
   data() {
     return {
-      msg: '',
+      error: {
+        msg: '',
+        status: 200,
+      },
       dialog: false,
+      token: '',
+      interceptor: null
     };
+  },
+  watch: {
+    token: function (t) {
+      // Clear headers and apply token
+      const interceptors = this.axios.interceptors.request;
+      if (this.interceptor !== null) {
+        interceptors.eject(this.interceptor);
+      }
+      this.interceptor = interceptors.use(function (config) {
+        config.headers = { Authorization: `Bearer ${t}` };
+        config.baseURL = oapi;
+        return config;
+      });
+
+      // Handle close
+      this.error.msg = '';
+      this.$router
+        .push('/services')
+        .then(() => { this.$router.go(-1) });
+    }
   },
   methods: {
     toggleDialog: function () {
       this.dialog = this.dialog === true ? false : true;
     },
     catch: function (error) {
+      if (typeof error.response.status === "number") {
+        this.error.status = error.response.status;
+      }
       if (error.response.status === 401) {
-        this.msg = this.t("messages.not_authorized");
+        this.error.msg = this.t("messages.not_authorized");
       } else {
-        this.msg = error;
+        this.error.msg = error;
       }
     }
   },

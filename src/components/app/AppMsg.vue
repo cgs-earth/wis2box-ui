@@ -3,9 +3,12 @@
   <div class="app-msg">
     <v-dialog v-model="snackbar" width="auto">
       <v-card>
-        <v-card-text v-html="msg" />
+        <v-card-text v-html="error.msg" />
         <v-card-actions>
-          <v-btn color="pink" block @click="close()" v-html="$t('util.close')" />
+          <v-row justify="center">
+            <token-auth v-if="error.status === 401" />
+            <v-btn color="pink" @click="close()" v-html="$t('util.close')" />
+          </v-row>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -15,28 +18,36 @@
 <script>
 import { defineComponent } from "vue";
 
+import TokenAuth from "./TokenAuth.vue";
+
+
 export default defineComponent({
-  name: "DataNavigation",
-  template: "#data-navigation",
-  props: ["msg"],
+  name: "AppMsg",
+  template: "#app-msg",
+  props: ["error"],
+  components: {
+    TokenAuth,
+  },
   data: function () {
     return {
       snackbar: false,
     }
   },
   watch: {
-    msg: function () {
+    "error.msg": function () {
       this.open();
     }
   },
   methods: {
     close() {
       this.snackbar = false;
-      this.$root.msg = '';
+      this.$root.error.msg = '';
     },
     open() {
-      if (this.msg !== '') {
+      if (this.error.msg !== '') {
         this.snackbar = true;
+      } else {
+        this.snackbar = false;
       }
     }
   }

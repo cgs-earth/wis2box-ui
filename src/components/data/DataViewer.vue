@@ -1,11 +1,11 @@
 <template id="data-viewer">
   <div class="data-viewer">
+    <v-card-title v-html="station.properties.name" />
     <v-layout>
       <v-app-bar color="#EEEEEE" flat>
         <template v-slot:prepend v-if="$vuetify.display.smAndDown">
           <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
         </template>
-        <v-toolbar-title v-html="station.properties.name" />
         <v-spacer />
         <v-tabs v-model="tab" end color="#014e9e">
           <v-tab v-for="(item, i) in tabs" class="text-center pa-2" :value="i" :key="i">
