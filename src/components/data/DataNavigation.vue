@@ -91,9 +91,14 @@ export default {
         index: index,
         id: newD[0].id,
         name: getNameTime(newD[0], newD[1]),
-        units: newD[0].properties.unitOfMeasurement.symbol,
+        units: this.symbol(newD[0]),
       };
       this.model = index;
+    },
+    symbol(datastream) {
+      if (datastream.properties.unitOfMeasurement) {
+        return datastream.properties.unitOfMeasurement.symbol
+      }
     },
   },
 };

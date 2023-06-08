@@ -76,7 +76,7 @@ export default {
       this.dialog = this.dialog === true ? false : true;
     },
     catch: function (error) {
-      if (typeof error.response.status === "number") {
+      if (error.response && typeof error.response.status === "number") {
         this.error.status = error.response.status;
       }
       if (error.response.status === 401) {
