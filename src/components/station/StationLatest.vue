@@ -1,18 +1,20 @@
 <template id="station-status">
   <div class="station-status">
-    <v-table>
-      <table>
+    <v-table hover>
+      <tbody>
         <tr v-for="(item, i) in recentObservations" :key="i">
-          <th width="50%">{{ getNameTime(item[0], item[1]) }}</th>
+          <td width="50%" class="text-center font-weight-bold">
+            {{ getNameTime(item[0], item[1]) }}
+          </td>
           <td width="50%">
-            {{ item[1].properties.result + " " + item[0].properties.unitOfMeasurement.symbol }}
+            {{ item[1].properties.result + " " + symbol(item[0]) }}
             <br>
             <div class="text-caption">
-              {{ $t("messages.from") + " " + item[1].properties.resultTime }}
+              {{ $t("messages.from") + " " + get_time(item[1]) }}
             </div>
           </td>
         </tr>
-      </table>
+      </tbody>
     </v-table>
   </div>
 </template>
@@ -44,6 +46,20 @@ export default defineComponent({
   },
   methods: {
     getNameTime,
+    get_time(obs) {
+      if (obs.properties.resultTime) {
+        return obs.properties.resultTime
+      } else {
+        return obs.properties.phenomenonTime
+      }
+    },
+    symbol(datastream) {
+      var UoM = datastream.properties.unitOfMeasurement;
+      if (UoM && UoM.symbol && UoM.symbol !== 'none') {
+        return datastream.properties.unitOfMeasurement.symbol;
+      }
+      return "";
+    },
     async loadObservations(station) {
       var self = this;
       for (const datastream of station.properties.Datastreams) {
