@@ -26,7 +26,9 @@
             <p>
               <l-map ref="wisMap" :zoom="zoom" :center="center" maxZoom="16" minZoom="2" style="height: 60vh"
                 @ready="onReady()">
-                <wis-station :features="features" :map="map" />
+                <template v-if="!loading">
+                  <wis-station :features="features" :map="map" />
+                </template>
                 <l-tile-layer :url="url" :attribution="attribution" />
                 <l-control position="topleft">
                   <v-menu open-on-hover>
