@@ -34,7 +34,8 @@
     "status": "History",
     "latest": "Latest",
     "report": "Station report",
-    "limit": "Limit"
+    "limit": "Limit",
+    "type": "Station Type"
   },
   "chart": {
     "chart": "Plot",

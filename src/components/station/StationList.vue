@@ -77,16 +77,16 @@ export default defineComponent({
       this.map.openPopup(content, latlng);
     },
     getColor(station) {
-      let hits = station.properties.num_obs;
-      if (hits === 0) {
-        return "#708090";
-      } else if (hits <= 7) {
-        return "#FF3300";
-      } else if (hits <= 19) {
-        return "#FF9900";
-      } else {
-        return "#009900";
+      const colors = {
+        "Power Plant": "#f44336",
+        "Power Plant Unit": "#ff9800",
+        "Building": "#ffeb3b",
+        "Pump Generating Plant": "#8bc34a",
+        "Pump Generating Plant Unit": "#009688",
+        "Lake/Reservoir": "#2196f3",
+        "River/Stream": "#673ab7"       
       }
+      return colors[station.properties.type];
     },
   },
 });

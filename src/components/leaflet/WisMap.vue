@@ -27,8 +27,27 @@
               <l-map ref="wisMap" :zoom="zoom" :center="center" maxZoom="16" minZoom="2" style="height: 60vh"
                 @ready="onReady()">
                 <wis-station :features="features" :map="map" />
-                <l-geo-json :geojson="path" />
                 <l-tile-layer :url="url" :attribution="attribution" />
+                <l-control position="topleft">
+                  <v-menu open-on-hover>
+                    <template v-slot:activator="{ props }">
+                      <v-btn v-bind="props" icon="mdi-map-legend">
+                      </v-btn>
+                    </template>
+
+                    <v-card class="legend pa-2" border="1">
+                      <v-card-title class="mx-4">{{ $t("station.type") }}</v-card-title>
+                      <v-row no-gutters justify="center" align="center" v-for="(item, i) in legend" :key="i">
+                        <v-col cols="2" offset="1">
+                          <i class="dot pl-1" :style="`background: ${item.color}`"> </i>
+                        </v-col>
+                        <v-col>
+                          {{ item.type }}
+                        </v-col>
+                      </v-row>
+                    </v-card>
+                  </v-menu>
+                </l-control>
               </l-map>
             </p>
           </v-card>
@@ -41,7 +60,7 @@
 <script>
 import "leaflet/dist/leaflet.css";
 import { geoJSON } from "leaflet/dist/leaflet-src.esm";
-import { LGeoJson, LMap, LTileLayer } from "@vue-leaflet/vue-leaflet";
+import { LControl, LMap, LTileLayer } from "@vue-leaflet/vue-leaflet";
 
 import WisStation from "../station/WisStation.vue";
 import StationInfo from "../station/StationInfo.vue";
@@ -53,7 +72,7 @@ export default defineComponent({
   name: "WisMap",
   template: "#wis-map",
   components: {
-    LGeoJson,
+    LControl,
     LMap,
     LTileLayer,
     WisStation,
@@ -62,7 +81,6 @@ export default defineComponent({
   props: ["params", "features"],
   data: function () {
     return {
-      path: null,
       numberMatched: 0,
       limit_: null,
       vals: {
@@ -76,23 +94,14 @@ export default defineComponent({
       attribution: window.VUE_APP_BASEMAP_ATTRIBUTION,
       url: window.VUE_APP_BASEMAP_URL,
       legend: [
-        {
-          color: "#009900",
-          range: "20 or more",
-        },
-        {
-          color: "#FF9900",
-          range: "8 - 19",
-        },
-        {
-          color: "#FF3300",
-          range: "1 - 7",
-        },
-        {
-          color: "#708090",
-          range: "None",
-        },
-      ],
+        { "type": "Power Plant", "color": "#f44336" },
+        { "type": "Power Plant Unit", "color": "#ff9800" },
+        { "type": "Building", "color": "#ffeb3b" },
+        { "type": "Pump Generating Plant", "color": "#8bc34a" },
+        { "type": "Pump Generating Plant Unit", "color": "#009688" },
+        { "type": "Lake/Reservoir", "color": "#2196f3" },
+        { "type": "River/Stream", "color": "#673ab7" }
+      ]
     };
   },
   computed: {

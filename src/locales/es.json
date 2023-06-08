@@ -34,7 +34,8 @@
     "status": "Registro",
     "latest": "Últimas",
     "report": "Informe de la estación",
-    "limit": "Límite"
+    "limit": "Límite",
+    "type": "Typo de esación"
   },
   "chart": {
     "chart": "Gráfico",

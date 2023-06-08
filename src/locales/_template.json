@@ -34,7 +34,8 @@
     "status": "",
     "latest": "",
     "report": "",
-    "limit": ""
+    "limit": "",
+    "type": ""
   },
   "chart": {
     "chart": "",

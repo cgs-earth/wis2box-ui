@@ -45,10 +45,19 @@ export default defineComponent({
       });
     },
     pointToLayer(feature, latLng) {
+      const colors = {
+        "Power Plant": "#f44336",
+        "Power Plant Unit": "#ff9800",
+        "Building": "#ffeb3b",
+        "Pump Generating Plant": "#8bc34a",
+        "Pump Generating Plant Unit": "#009688",
+        "Lake/Reservoir": "#2196f3",
+        "River/Stream": "#673ab7"       
+      }
       const markerStyle = {
         radius: 4,
-        fillColor: "#009900",
-        color: "#004D00",
+        fillColor: colors[feature.properties.type],
+        color: "#AAAAAA",
         weight: 1,
         opacity: 1,
         fillOpacity: 0.8,
