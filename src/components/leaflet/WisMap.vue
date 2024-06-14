@@ -38,9 +38,10 @@
                 </template>
                 <l-tile-layer :url="url" :attribution="attribution" />
                 <l-control position="bottomright">
-                  <v-card class="legend pa-2" border="1">
+                  <v-card class="legend pa-2" border="1" width="120">
                     <p class="text-subtitle-2">{{ $t("station.type") }}</p>
                     <v-row no-gutters justify="center" align="center" v-for="(item, i) in legend" :key="i">
+                      <v-divider />
                       <v-col cols="2" offset="1">
                         <i class="dot pl-1 mt-1" :style="`background: ${item.color}`"> </i>
                       </v-col>

@@ -49,6 +49,11 @@ export default defineComponent({
           href: undefined,
         },
         {
+          text: "wqie",
+          target: undefined,
+          href: "https://www.ogc.org/initiatives/waterqualityie/",
+        },
+        {
           text: "documentation",
           target: undefined,
           href: documentation,

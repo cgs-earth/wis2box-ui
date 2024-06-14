@@ -47,7 +47,7 @@ export default {
       dialog: false,
       token: '',
       interceptor: null,
-      cluster: window.VUE_APP_CLUSTER === true || window.VUE_APP_CLUSTER === 'true'
+      cluster: window.VUE_APP_CLUSTER === true || window.VUE_APP_CLUSTER === 'true' || window.VUE_APP_CLUSTER === 'True' 
     };
   },
   computed: {
