@@ -71,9 +71,20 @@ export default defineComponent({
     goBack() {
       window.history.length > 1 ? this.$router.go(-1) : this.$router.push("/");
     },
-    async getCollections(data) {
+    async loadCollections() {
       var self = this;
-      for (var c of data.collections) {
+      await this.$http({
+        method: "get",
+        url: `${oapi}/collections`
+      })
+        .then(function (response) {
+          self.parseCollections(response.data.collections);
+        })
+        .catch(this.$root.catch);
+    },
+    async parseCollections(collections) {
+      var self = this;
+      for (var c of collections) {
         if (c.id === "things") {
           await this.$http({
             method: "get",
@@ -85,6 +96,7 @@ export default defineComponent({
             .catch(this.$root.catch);
         }
       }
+      this.loading = false;
     }
   },
   watch: {
@@ -96,20 +108,9 @@ export default defineComponent({
       },
     },
   },
-  async created() {
+  mounted() {
     this.loading = true;
-    var self = this;
-    await this.$http({
-      method: "get",
-      url: oapi + "/collections",
-    })
-      .then(function (response) {
-        self.getCollections(response.data);
-      })
-      .catch(this.$root.catch)
-      .then(function () {
-        self.loading = false;
-      });
+    this.loadCollections();
   },
 });
 </script>

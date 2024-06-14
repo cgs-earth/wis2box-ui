@@ -6,13 +6,16 @@
     "datasets": "Ensemble de données ",
     "services": "Services de données",
     "data": "Données",
-    "documentation": "Documentation"
+    "documentation": "Documentation",
+    "wqie": "WQIE"
   },
   "util": {
-    "token": "Jeton d'accès",
+    "token": "Jeton",
     "cancel": "Annuler",
     "save": "Conserver",
-    "close": "Fermer"
+    "close": "Fermer",
+    "settings": "Paramètres",
+    "cluster": "Grappe"
   },
   "footer": {
     "powered_by": "Alimenté par"
@@ -20,11 +23,13 @@
   "messages": {
     "welcome": "Bienvenue à WIS 2.0 in a box!",
     "no_observations_in_collection": " n'a pas d'observations dans la collection ",
-    "not_authorized": "Les données nécessitent une autorisation; Veuillez ajouter un jeton d'autorisation",
+    "authorized": "Autorisée",
+    "not_authorized": "L'ensemble de données nécessite une autorisation ; Ajouter un jeton d'autorisationn",
     "no_linked_collections": "n'a pas de collections liées",
-    "how_to_link_station": "Pour lier une collection, republiez la ou les stations après que hub2box a publié une observation de la station",
+    "how_to_link_station": "Veuillez associer les stations à cet ensemble de données/sujet pour voir leurs données affichées sur la carte",
     "from": "depuis",
-    "no_of_observations": "Observations des dernières 24 heures"
+    "no_of_observations": "Observations des dernières 24 heures",
+    "does_not_exist": "Page non trouvée"
   },
   "station": {
     "map": "Plan de la station",
@@ -41,7 +46,7 @@
     "chart": "Graphique",
     "options": "Choix",
     "collection": "Collection",
-    "observed_property": "Flux de données",
+    "observed_property": "Propriété observée",
     "station": "Station",
     "data_source": "Source de données",
     "download": "Télécharger"

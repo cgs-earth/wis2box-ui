@@ -6,13 +6,16 @@
     "datasets": "Datasets",
     "services": "Services",
     "data": "Data",
-    "documentation": "Documentation"
+    "documentation": "wis2box Documentation",
+    "wqie": "WQIE"
   },
   "util": {
     "token": "Token",
     "cancel": "Cancel",
     "save": "Save",
-    "close": "Close"
+    "close": "Close",
+    "settings": "Settings",
+    "cluster": "Cluster"
   },
   "footer": {
     "powered_by": "Powered by"
@@ -20,11 +23,13 @@
   "messages": {
     "welcome": "Welcome to WIS 2.0 in a box!",
     "no_observations_in_collection": " has no observations in collection ",
+    "authorized": "Authorized",
     "not_authorized": "Data requires authorization; Please add an authorization token",
     "no_linked_collections": "has no linked collections",
-    "how_to_link_station": "To link a collection, republish the station(s) after hub2box has published an observation from the station",
+    "how_to_link_station": "Please associate stations with this dataset/topic to see their data displayed on the map",
     "from": "from",
-    "no_of_observations": "Observations from the past 24 hours"
+    "no_of_observations": "Observations from the past 24 hours",
+    "does_not_exist": "Page not found"
   },
   "station": {
     "map": "Station map",
@@ -32,17 +37,17 @@
     "wigos_station_identifier": "WIGOS station identifier",
     "name": "Station name",
     "status": "History",
-    "latest": "Latest",
+    "latest": "Latest values",
     "report": "Station report",
     "limit": "Limit",
-    "type": "Station Type"
+    "type": "Station type"
   },
   "chart": {
     "chart": "Plot",
     "options": "Options",
     "collection": "Collection",
-    "observed_property": "Datastream",
-    "station": "Stations",
+    "observed_property": "Observed Property",
+    "station": "Station",
     "data_source": "Data source",
     "download": "Download"
   },

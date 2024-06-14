@@ -1,7 +1,5 @@
 <template id="wis-station">
-  <div class="wis-station">
-    <div class="wis-station" style="display: none"></div>
-  </div>
+  <div class="wis-station" style="display: none"></div>
 </template>
 
 <script>
@@ -11,9 +9,9 @@ import { MarkerClusterGroup } from "leaflet.markercluster/dist/leaflet.markerclu
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 
-let oapi = window.VUE_APP_OAPI;
-
 import { defineComponent } from "vue";
+
+let oapi = window.VUE_APP_OAPI;
 
 export default defineComponent({
   name: "WisStation",
@@ -26,6 +24,8 @@ export default defineComponent({
         onEachFeature: this.onEachFeature,
         pointToLayer: this.pointToLayer,
       },
+      layer: null,
+      clusterLayer: null,
     };
   },
   mounted: function () {
@@ -33,15 +33,30 @@ export default defineComponent({
       this.onReady()
     })
   },
+  watch: {
+    "$root.cluster": function () {
+      this.renderLayer();
+    }
+  },
   methods: {
     onReady() {
-      var markerCluster = new MarkerClusterGroup({
-        maxClusterRadius: 10,
-        chunkedLoading: true,
-        chunkInterval: 500,
-      });
-      markerCluster.addLayer(new geoJSON(this.stations, this.geojsonOptions));
-      this.map.addLayer(markerCluster);
+      this.layer = new geoJSON(this.stations, this.geojsonOptions);
+      this.clusterLayer = new MarkerClusterGroup({
+          // disableClusteringAtZoom: 9,
+          chunkedLoading: true,
+          chunkInterval: 500,
+        });
+      this.clusterLayer.addLayer(this.layer);
+      this.renderLayer();
+    },
+    renderLayer() {
+      if (this.$root.cluster){
+        this.layer.removeFrom(this.map);
+        this.map.addLayer(this.clusterLayer);
+      } else {
+        this.clusterLayer.removeFrom(this.map)
+        this.map.addLayer(this.layer);
+      }
     },
     mapClick(e) {
       this.features_.station = e.target.feature;
@@ -57,7 +72,9 @@ export default defineComponent({
         self.features_.station = feature;
         layer.bindPopup(content).openPopup(e.latLng);
       });
-      layer.on({click: this.mapClick});
+      layer.on({
+        click: this.mapClick
+      });
     },
     pointToLayer(feature, latLng) {
       const colors = {

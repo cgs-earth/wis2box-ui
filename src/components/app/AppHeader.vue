@@ -10,8 +10,7 @@
                 <img :src="logo" class="pl-6 my-3" />
               </a>
               <v-spacer />
-              <token-auth :header="true" />
-              <select-locale class="pr-6" />
+              <app-settings class="ma-3" />
             </v-row>
           </v-container>
         </v-responsive>
@@ -21,8 +20,7 @@
 </template>
 
 <script>
-import SelectLocale from "./SelectLocale.vue";
-import TokenAuth from "./TokenAuth.vue";
+import AppSettings from "./AppSettings.vue";
 import logo from "@/assets/img/logo.png";
 
 import { defineComponent } from "vue";
@@ -31,8 +29,7 @@ export default defineComponent({
   name: "AppHeader",
   template: "#app-header",
   components: {
-    SelectLocale,
-    TokenAuth,
+    AppSettings
   },
   data: function () {
     return {

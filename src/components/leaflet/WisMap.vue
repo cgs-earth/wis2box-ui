@@ -24,8 +24,15 @@
         <v-col :cols="smAndDown ? 12 : 7">
           <v-card class="ma-1">
             <p>
-              <l-map ref="wisMap" :zoom="zoom" :center="center" maxZoom="16" minZoom="2" style="height: 60vh"
-                @ready="onReady()">
+              <l-map
+                ref="wisMap"
+                :zoom="zoom"
+                :center="center"
+                maxZoom="16"
+                minZoom="2"
+                style="height: 60vh"
+                @ready="onReady()"
+              >
                 <template v-if="!loading">
                   <wis-station :features="features" :map="map" />
                 </template>
@@ -140,13 +147,20 @@ export default defineComponent({
         .then(function (response) {
           self.features_.stations = response.data;
           self.numberMatched = response.data.numberMatched;
-          var bounds_ = geoJSON(response.data).getBounds();
-          self.map.fitBounds(bounds_);
         })
         .catch(this.$root.catch)
         .then(function () {
+          var bounds_ = geoJSON(self.features_.stations).getBounds();
+          self.map.fitBounds(bounds_);
+        })
+        .catch(function () {
+          self.$root.catch(`
+            <p>${self.$t("messages.does_not_exist")}</p>
+            <p>${self.$t("messages.how_to_link_station")}</p>`);
+        })
+        .then(function () {
           self.loading = false;
-          setTimeout(self.loadStations, 900000);
+          // setTimeout(self.loadStations, 900000);
         });
     },
   },

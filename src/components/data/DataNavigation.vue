@@ -64,7 +64,12 @@ export default {
       })
         .then(function (response) {
           // handle success
-          self.getCollectionItem(response.data)
+          var feature = response.data.features[0];
+          if (feature && feature.properties && feature.properties.resultTime){
+            self.getCollectionItem(response.data);
+          } else {
+            self.$root.catch(self.$t("chart.station") + self.$t("messages.no_observations_in_collection"));
+          }
         })
         .catch(this.$root.catch)
         .then(function () {
@@ -84,6 +89,9 @@ export default {
           self.choices_.datastreams.push([datastream, response.data]);
         })
         .catch(this.$root.catch)
+        .then(function () {
+          console.log("done");
+        });
     },
     updateData(newD, index) {
       this.choices_.datastream = {

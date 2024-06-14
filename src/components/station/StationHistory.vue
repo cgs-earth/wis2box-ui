@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import Plotly from "plotly.js-dist-min";
+import Plotly from "plotly.js-cartesian-dist-min";
 import { clean, hasLinks } from "@/scripts/helpers.js";
 let oapi = window.VUE_APP_OAPI;
 
@@ -86,7 +86,7 @@ export default defineComponent({
           this.$root.catch(`
             ${clean(station.properties.name)} ${this.$t(
             "messages.no_linked_collections"
-          )}. ${this.$t("messages.how_to_link_station")}`);
+          )}<br>${this.$t("messages.how_to_link_station")}`);
           this.loading = false;
         }
       },
@@ -113,13 +113,17 @@ export default defineComponent({
       })
         .then(function (response) {
           // handle success
-          var ort = response.data.features[0].properties.resultTime;
-          self.oldestResultTime = new Date(ort);
-          var index = response.data.features[0].properties.index;
-          if (self.inDays(self.oldestResultTime, self.now) > 30) {
-            self.loadAllObservations(station, index);
+          var feature = response.data.features[0];
+          if (feature && feature.properties && feature.properties.resultTime){
+            self.oldestResultTime = new Date(feature.properties.resultTime);
+            var index = response.data.features[0].properties.index;
+            if (self.inDays(self.oldestResultTime, self.now) > 30) {
+              self.loadAllObservations(station, index);
+            } else {
+              self.loadDailyObservations(station, index);
+            }
           } else {
-            self.loadDailyObservations(station, index);
+            self.$root.catch(self.$t("chart.station") + self.$t("messages.no_observations_in_collection"));
           }
         })
         .catch(this.$root.catch);
@@ -153,7 +157,7 @@ export default defineComponent({
           self.data.push(trace);
           self.plot(plot);
         }
-      });
+      }).catch(this.$root.catch);
       this.loading = false;
     },
     async loadDailyObservations(station, index) {
@@ -209,7 +213,7 @@ export default defineComponent({
               self.plot(plot);
             }
           }
-        });
+        }).catch(this.$root.catch);
       }
       this.loading = false;
     },

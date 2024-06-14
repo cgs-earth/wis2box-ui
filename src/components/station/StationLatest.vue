@@ -40,6 +40,13 @@ export default defineComponent({
         if (station !== null) {
           this.recentObservations = [];
           this.loadObservations(station);
+        } else {
+          this.$root.catch(`
+            ${station.properties.name} ${this.$t(
+            "messages.no_linked_collections"
+            )} <br> ${this.$t("messages.how_to_link_station")}`);
+          this.loading = false;
+          this.tab = null;
         }
       },
     },
@@ -92,7 +99,7 @@ export default defineComponent({
         // handle success
         self.recentObservations.push([datastream, response.data]);
       })
-        .catch(this.$root.catch);
+      .catch(this.$root.catch);
     },
   },
 });

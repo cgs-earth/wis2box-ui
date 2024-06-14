@@ -1,18 +1,19 @@
 <template id="token-auth">
   <div class="token-auth">
-    <v-menu v-model="menu" :close-on-content-click="false">
+    <v-menu location="start" v-model="menu" :close-on-content-click="false">
       <template v-slot:activator="{ props }">
-        <v-btn v-if="header" color="#FFFFFF" class="font-weight-bold" v-bind="props" v-html="$t('util.token')" />
-        <v-btn v-else color="#274863" v-bind="props" v-html="$t('util.token')" />
+        <v-btn block variant="text" :color="color" class="font-weight-bold" v-bind="props">
+          <v-icon icon="mdi-key-variant" />&nbsp;{{ $t('util.token') }}
+        </v-btn>
       </template>
-      <v-card>
-        <v-card-text>
-          <v-text-field v-model="token" type="password" single-line hide-details />
-        </v-card-text>
+      <v-card min-width="256">
+        <v-text-field class="mx-3" v-model="token" :label="$t('util.token')" type="password" variant="underlined"
+          single-line hide-details />
         <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn text @click="onClose" v-html="$t('util.cancel')" />
-          <v-btn text @click="saveToken" v-html="$t('util.save')" />
+          <v-row justify="center">
+            <v-btn color="#014e9e" class="font-weight-bold" @click="saveToken" v-html="$t('util.save')" />
+            <v-btn color="pink" class="font-weight-bold" @click="onClose" v-html="$t('util.cancel')" />
+          </v-row>
         </v-card-actions>
       </v-card>
     </v-menu>
@@ -35,6 +36,15 @@ export default defineComponent({
   watch: {
     "$root.token": function (token) {
       this.token = token;
+    }
+  },
+  computed: {
+    color: function () {
+      if (this.header) {
+        return "#FFFFFF"
+      } else {
+        return "#014e9e"
+      }
     }
   },
   methods: {
