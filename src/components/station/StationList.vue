@@ -78,15 +78,10 @@ export default defineComponent({
     },
     getColor(station) {
       const colors = {
-        "Power Plant": "#f44336",
-        "Power Plant Unit": "#ff9800",
-        "Building": "#ffeb3b",
-        "Pump Generating Plant": "#8bc34a",
-        "Pump Generating Plant Unit": "#009688",
-        "Lake/Reservoir": "#2196f3",
-        "River/Stream": "#673ab7"       
+        "STORET": "#025da2",
+        "NWIS": "#ff9800"
       }
-      return colors[station.properties.type];
+      return colors[station.properties.provider];
     },
   },
 });

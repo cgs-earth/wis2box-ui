@@ -1,6 +1,6 @@
 <template id="app-footer">
   <div class="app-footer">
-    <v-footer flat height="110" color="#1d3e85">
+    <v-footer flat height="110" color="#274863">
       <v-row justify="center" align="center">
         <v-col class="primary text-center" cols="12">
           <p style="color:white;">

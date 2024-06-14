@@ -3,7 +3,7 @@
     <v-menu v-model="menu" :close-on-content-click="false">
       <template v-slot:activator="{ props }">
         <v-btn v-if="header" color="#FFFFFF" class="font-weight-bold" v-bind="props" v-html="$t('util.token')" />
-        <v-btn v-else color="#1d3e85" v-bind="props" v-html="$t('util.token')" />
+        <v-btn v-else color="#274863" v-bind="props" v-html="$t('util.token')" />
       </template>
       <v-card>
         <v-card-text>
