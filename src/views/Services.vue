@@ -20,6 +20,7 @@ export default {
     return {
       services: {
         API: window.VUE_APP_OAPI,
+        STA: window.VUE_APP_STA,
         WAF: window.VUE_APP_WAF,
       },
     };

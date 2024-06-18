@@ -62,17 +62,13 @@ export default {
         method: "get",
         url: collection_url,
       })
-        .then(function (response) {
+      .then(function (response) {
           // handle success
-          var feature = response.data.features[0];
-          if (feature && feature.properties && feature.properties.resultTime){
-            self.getCollectionItem(response.data);
-          } else {
-            self.$root.catch(self.$t("chart.station") + self.$t("messages.no_observations_in_collection"));
-          }
+          self.getCollectionItem(response.data)
         })
         .catch(this.$root.catch)
         .then(function () {
+          self.loading = false;
           console.log("done");
         });
     },
