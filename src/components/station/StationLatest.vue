@@ -1,8 +1,5 @@
 <template id="station-status">
   <div class="station-status">
-    <div :style="{ visibility: loading ? 'visible' : 'hidden' }">
-        <v-progress-linear striped indeterminate color="primary" />
-    </div>
     <v-table hover>
       <tbody>
         <tr v-for="(item, i) in recentObservations" :key="i">
@@ -35,7 +32,7 @@ export default defineComponent({
     return {
       features_: this.features,
       recentObservations: [],
-      loading: false
+      loading: this.$root.loading
     };
   },
   watch: {
@@ -74,6 +71,7 @@ export default defineComponent({
     async loadObservations(station) {
       var self = this;
       for (const datastream of station.properties.Datastreams) {
+        this.$root.loading = true;
         await this.$http({
           method: "get",
           url: datastream,
@@ -85,7 +83,7 @@ export default defineComponent({
           .catch(this.$root.catch)
           .then(function () {
             self.tab = 0;
-            self.loading = false;
+            self.$root.loading = false;
             console.log("done");
           });
       }

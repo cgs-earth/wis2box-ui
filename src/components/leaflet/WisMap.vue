@@ -1,9 +1,5 @@
 <template id="wis-map">
-  <div class="wis-map">
-    <div v-if="loading">
-      <v-progress-linear striped indeterminate color="primary" />
-    </div>
-
+  <div class="wis-map" >
     <v-toolbar>
       <v-toolbar-title>
         {{ station_name || $t("chart.station") }}
@@ -139,6 +135,7 @@ export default defineComponent({
       });
     },
     async loadStations() {
+      this.$root.loading = true;
       this.loading = true;
       var self = this;
       await this.$http({
@@ -160,6 +157,7 @@ export default defineComponent({
             <p>${self.$t("messages.how_to_link_station")}</p>`);
         })
         .then(function () {
+          self.$root.loading = false;
           self.loading = false;
           // setTimeout(self.loadStations, 900000);
         });

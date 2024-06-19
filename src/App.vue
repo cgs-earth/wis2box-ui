@@ -9,6 +9,9 @@
             <v-layout>
               <app-nav />
               <v-main>
+                <div :style="{ visibility: loading ? 'visible' : 'hidden' }">
+                  <v-progress-linear striped indeterminate color="primary" />
+                </div>
                 <router-view />
               </v-main>
             </v-layout>
@@ -47,7 +50,8 @@ export default {
       dialog: false,
       token: '',
       interceptor: null,
-      cluster: window.VUE_APP_CLUSTER === true || window.VUE_APP_CLUSTER === 'true' || window.VUE_APP_CLUSTER === 'True' 
+      cluster: window.VUE_APP_CLUSTER === true || window.VUE_APP_CLUSTER === 'true' || window.VUE_APP_CLUSTER === 'True',
+      loading: false
     };
   },
   computed: {
