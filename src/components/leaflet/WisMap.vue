@@ -33,18 +33,27 @@
                   <wis-station :features="features" :map="map" />
                 </template>
                 <l-tile-layer :url="url" :attribution="attribution" />
-                <l-control position="bottomright">
-                  <v-card class="legend pa-2" border="1" width="120">
-                    <p class="text-subtitle-2">{{ $t("station.type") }}</p>
-                    <v-row no-gutters justify="center" align="center" v-for="(item, i) in legend" :key="i">
-                      <v-divider />
-                      <v-col cols="2" offset="1">
-                        <i class="dot pl-1 mt-1" :style="`background: ${item.color}`"> </i>
-                      </v-col>
-                      <v-col class="py-1">
-                        {{ item.type }}
-                      </v-col>
-                    </v-row>
+                <l-control position="topleft">
+                  <v-card class="legend" width="200">
+                    <v-expansion-panels>
+                      <v-expansion-panel>
+                        <v-expansion-panel-title>
+                          <v-icon class="pr-2" icon="mdi-map-legend" />
+                          {{ $t('station.type') }} 
+                        </v-expansion-panel-title>
+                        <v-expansion-panel-text>
+                          <v-row no-gutters justify="center" align="center" v-for="(item, i) in legend" :key="i">
+                            <v-divider v-if="i !== 0" />
+                            <v-col cols="2" offset="1">
+                              <i class="dot pl-1 mt-1" :style="`background: ${item.color}`"> </i>
+                            </v-col>
+                            <v-col class="py-1">
+                              {{ item.type }}
+                            </v-col>
+                          </v-row>
+                        </v-expansion-panel-text>
+                      </v-expansion-panel>
+                    </v-expansion-panels>
                   </v-card>
                 </l-control>
               </l-map>
@@ -93,8 +102,13 @@ export default defineComponent({
       attribution: window.VUE_APP_BASEMAP_ATTRIBUTION,
       url: window.VUE_APP_BASEMAP_URL,
       legend: [
-        { "type": "STORET", "color": "#025da2" },
-        { "type": "NWIS", "color": "#ff9800" }
+        { "type": "Power Plant", "color": "#f44336" },
+        { "type": "Power Plant Unit", "color": "#ff9800" },
+        { "type": "Building", "color": "#ffeb3b" },
+        { "type": "Pump Generating Plant", "color": "#8bc34a" },
+        { "type": "Pump Generating Plant Unit", "color": "#009688" },
+        { "type": "Lake/Reservoir", "color": "#2196f3" },
+        { "type": "River/Stream", "color": "#673ab7" }
       ]
     };
   },

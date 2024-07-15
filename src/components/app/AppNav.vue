@@ -49,9 +49,9 @@ export default defineComponent({
           href: undefined,
         },
         {
-          text: "wqie",
+          text: "rise",
           target: undefined,
-          href: "https://www.ogc.org/initiatives/waterqualityie/",
+          href: "https://data.usbr.gov/",
         },
         {
           text: "documentation",

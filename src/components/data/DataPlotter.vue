@@ -49,7 +49,7 @@ export default defineComponent({
         x: [],
         y: [],
         line: {
-          color: "#014e9e",
+          color: "#007396",
         },
         name: "",
       },
@@ -60,7 +60,7 @@ export default defineComponent({
         y: [],
         marker: {
           size: 5,
-          color: "#014e9e",
+          color: "#007396",
         },
         name: "",
       },

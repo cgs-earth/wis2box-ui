@@ -6,7 +6,7 @@
         <v-responsive width="90%" max-width="1130" height="100%" class="mx-auto">
           <v-container fluid>
             <v-row fill-height>
-              <a :href="wqp" title="hub2box">
+              <a :href="provider" title="hub2box">
                 <img :src="logo" class="pl-6 my-3" />
               </a>
               <v-spacer />
@@ -33,7 +33,7 @@ export default defineComponent({
   },
   data: function () {
     return {
-      wqp: "https://www.waterqualitydata.us/",
+      provider: "https://www.usbr.gov/",
       logo: logo,
     };
   },
