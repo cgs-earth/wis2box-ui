@@ -10,7 +10,7 @@
               <app-nav />
               <v-main>
                 <div :style="{ visibility: loading ? 'visible' : 'hidden' }">
-                  <v-progress-linear striped indeterminate color="primary" />
+                  <v-progress-linear striped indeterminate color="info" />
                 </div>
                 <router-view />
               </v-main>

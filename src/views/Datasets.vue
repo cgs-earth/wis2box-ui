@@ -1,7 +1,7 @@
 <template id="datasets">
   <div class="datasets">
     <v-card flat>
-      <v-alert border="start" variant="contained-text" color="#014e9e">
+      <v-alert border="start" variant="contained-text" color="warning">
         <h2>{{ $t("messages.welcome") }}</h2>
       </v-alert>
       <v-card class="pa-2">

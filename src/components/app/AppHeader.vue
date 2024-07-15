@@ -1,6 +1,6 @@
 <template id="app-header">
   <div class="app-header">
-    <v-app-bar flat height="124" color="#274863">
+    <v-app-bar flat height="124" color="primary">
 
       <template v-slot:default>
         <v-responsive width="90%" max-width="1130" height="100%" class="mx-auto">

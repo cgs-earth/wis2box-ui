@@ -2,6 +2,17 @@
 
 import '@mdi/font/css/materialdesignicons.css'
 import { aliases, mdi } from 'vuetify/iconsets/mdi'
+const usbrSkinTheme = {
+  colors: {
+    background: '#FFFFFF',
+    primary: '#003E51',
+    secondary: '#C69214',
+    error: '#B00020',
+    info: '#DDCBA4',
+    success: '#007396',
+    warning: '#FB8C00',
+  }
+}
 
 // Vuetify
 import { createVuetify } from "vuetify";
@@ -20,24 +31,10 @@ export default createVuetify({
     },
   },
   theme: {
+    defaultTheme: 'usbrSkinTheme',
     themes: {
-      light: {
-        dark: false,
-        primary: "#014e9e",
-        secondary: "#75b942",
-        accent: "#d5e3f0",
-        warning: "#f8a700",
-        error: "#B00020"
-      },
-      dark: {
-        light: false,
-        primary: "#01aad3",
-        secondary: "#75b942",
-        accent: "#d5e3f0",
-        warning: "#f8a700",
-        error: "#B00020"
-      },
-    }
+      usbrSkinTheme,
+    },
   },
   locale: createVueI18nAdapter({
     i18n,

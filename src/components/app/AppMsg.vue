@@ -15,7 +15,7 @@
                 <v-card-actions>
                     <v-row justify="center">
                         <token-auth v-if="error.status === 401" :header="false" />
-                        <v-btn color="pink" class="font-weight-bold" @click="close()" v-html="$t('util.close')" />
+                        <v-btn color="error" class="font-weight-bold" @click="close()" v-html="$t('util.close')" />
                     </v-row>
                 </v-card-actions>
             </v-card>

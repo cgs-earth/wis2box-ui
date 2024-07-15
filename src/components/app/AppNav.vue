@@ -1,14 +1,14 @@
 <template id="app-nav">
   <div class="app-nav">
     <v-app-bar flat>
-      <v-btn-toggle divided>
+      <v-btn-toggle divided color="primary">
         <template v-for="(item, i) in items" :key="i">
           <v-hover v-slot="{ isHovering, props }">
             <v-btn
               :href="item.href"
               :to="item.target"
               :target="`_window_${item.text}`"
-              :color="isHovering ? '#014e9e' : undefined"
+              :color="isHovering ? 'secondary' : undefined"
               class="font-weight-bold"
               variant="text"
               v-bind="props"

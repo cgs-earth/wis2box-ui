@@ -11,8 +11,8 @@
           single-line hide-details />
         <v-card-actions>
           <v-row justify="center">
-            <v-btn color="#014e9e" class="font-weight-bold" @click="saveToken" v-html="$t('util.save')" />
-            <v-btn color="pink" class="font-weight-bold" @click="onClose" v-html="$t('util.cancel')" />
+            <v-btn color="primary" class="font-weight-bold" @click="saveToken" v-html="$t('util.save')" />
+            <v-btn color="error" class="font-weight-bold" @click="onClose" v-html="$t('util.cancel')" />
           </v-row>
         </v-card-actions>
       </v-card>
@@ -41,9 +41,9 @@ export default defineComponent({
   computed: {
     color: function () {
       if (this.header) {
-        return "#FFFFFF"
+        return "background"
       } else {
-        return "#014e9e"
+        return "primary"
       }
     }
   },

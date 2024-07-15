@@ -4,7 +4,7 @@
       class="pt-0 mb-2"
       :style="{ visibility: loading ? 'visible' : 'hidden' }"
     >
-      <v-progress-linear height="6" indeterminate color="primary" />
+      <v-progress-linear height="6" indeterminate color="info" />
     </div>
     <v-row justify="center">
       <div

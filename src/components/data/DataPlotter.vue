@@ -4,7 +4,7 @@
       <v-alert v-show="alert.value" type="warning" v-html="alert.msg" />
 
       <div :style="{ visibility: loading ? 'visible' : 'hidden' }">
-        <v-progress-linear striped indeterminate color="primary" />
+        <v-progress-linear striped indeterminate color="info" />
       </div>
       <div :style="{ visibility: !loading ? 'visible' : 'hidden' }">
         <v-card class="mx-auto" flat>

@@ -11,7 +11,7 @@
           v-for="(name, lang) in languages"
           :key="`lang-${name}`"
           :active="$i18n.locale === lang"
-          active-color="#014e9e"
+          active-color="secondary"
           @click="$i18n.locale = lang"
         >
           <v-list-item-title>{{ name }}</v-list-item-title>
@@ -40,9 +40,9 @@ export default defineComponent({
     },
     color: function () {
       if (this.header) {
-        return "#FFFFFF"
+        return "background"
       } else {
-        return "#014e9e"
+        return "primary"
       }
     }
   },
