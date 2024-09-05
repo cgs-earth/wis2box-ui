@@ -1,4 +1,4 @@
-FROM node:14.18.1 as ui-builder
+FROM node:14.18.1 AS ui-builder
 
 RUN mkdir /usr/src/app
 RUN echo "deb http://archive.debian.org/debian stretch main" > /etc/apt/sources.list \
@@ -6,8 +6,8 @@ RUN echo "deb http://archive.debian.org/debian stretch main" > /etc/apt/sources.
     && apt-get upgrade \
     && apt-get install -y chromium
 
-ENV PATH /usr/src/app/node_modules/.bin:$PATH
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
+ENV PATH=/usr/src/app/node_modules/.bin:$PATH
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 
 COPY package.json /usr/src/app/package.json
 
