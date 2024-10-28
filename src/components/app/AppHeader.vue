@@ -7,7 +7,7 @@
           <v-container fluid>
             <v-row fill-height>
               <a :href="provider" title="hub2box">
-                <img :src="logo" class="pl-6 my-3" />
+                <img :src="logo" style="height: 80px;" class="pl-6 my-3" />
               </a>
               <v-spacer />
               <app-settings class="ma-3" />
@@ -33,7 +33,7 @@ export default defineComponent({
   },
   data: function () {
     return {
-      provider: "https://www.usbr.gov/",
+      provider: "https://internetofwater.org/",
       logo: logo,
     };
   },

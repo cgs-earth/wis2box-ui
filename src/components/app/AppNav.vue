@@ -49,11 +49,6 @@ export default defineComponent({
           href: undefined,
         },
         {
-          text: "rise",
-          target: undefined,
-          href: "https://data.usbr.gov/",
-        },
-        {
           text: "documentation",
           target: undefined,
           href: documentation,

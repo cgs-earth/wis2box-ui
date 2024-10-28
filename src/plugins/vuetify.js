@@ -5,12 +5,12 @@ import { aliases, mdi } from 'vuetify/iconsets/mdi'
 const usbrSkinTheme = {
   colors: {
     background: '#FFFFFF',
-    primary: '#003E51',
-    secondary: '#C69214',
-    error: '#B00020',
-    info: '#DDCBA4',
-    success: '#007396',
-    warning: '#FB8C00',
+    primary: '#55677F',
+    secondary: '#1B335F',
+    error: '#E6000B',
+    info: '#A1C6D5',
+    success: '#00A087',
+    warning: '#FCB95A',
   }
 }
 

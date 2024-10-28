@@ -9,6 +9,9 @@
             {{ version }}
           </p>
         </v-col>
+        <a href="https://cgsearth.org" title="cgs">
+          <img :src="poweredbycgs" style="height: 40px;" />
+        </a>
       </v-row>
     </v-footer>
   </div>
@@ -16,6 +19,7 @@
 
 <script>
 import { name, version, homepage } from "../../../package";
+import poweredbycgs from "@/assets/img/poweredbycgs.png";
 
 import { defineComponent } from "vue";
 
@@ -27,6 +31,7 @@ export default defineComponent({
       version: version,
       name: name,
       home: homepage,
+      poweredbycgs: poweredbycgs
     };
   },
 });
