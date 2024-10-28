@@ -1,9 +1,5 @@
 <template id="wis-map">
-  <div class="wis-map">
-    <div v-if="loading">
-      <v-progress-linear striped indeterminate color="primary" />
-    </div>
-
+  <div class="wis-map" >
     <v-toolbar>
       <v-toolbar-title>
         {{ station_name || $t("chart.station") }}
@@ -24,31 +20,41 @@
         <v-col :cols="smAndDown ? 12 : 7">
           <v-card class="ma-1">
             <p>
-              <l-map ref="wisMap" :zoom="zoom" :center="center" maxZoom="16" minZoom="2" style="height: 60vh"
-                @ready="onReady()">
+              <l-map
+                ref="wisMap"
+                :zoom="zoom"
+                :center="center"
+                maxZoom="16"
+                minZoom="2"
+                style="height: 60vh"
+                @ready="onReady()"
+              >
                 <template v-if="!loading">
                   <wis-station :features="features" :map="map" />
                 </template>
                 <l-tile-layer :url="url" :attribution="attribution" />
                 <l-control position="topleft">
-                  <v-menu open-on-hover>
-                    <template v-slot:activator="{ props }">
-                      <v-btn v-bind="props" icon="mdi-map-legend">
-                      </v-btn>
-                    </template>
-
-                    <v-card class="legend pa-2" border="1">
-                      <v-card-title class="mx-4">{{ $t("station.type") }}</v-card-title>
-                      <v-row no-gutters justify="center" align="center" v-for="(item, i) in legend" :key="i">
-                        <v-col cols="2" offset="1">
-                          <i class="dot pl-1" :style="`background: ${item.color}`"> </i>
-                        </v-col>
-                        <v-col>
-                          {{ item.type }}
-                        </v-col>
-                      </v-row>
-                    </v-card>
-                  </v-menu>
+                  <v-card class="legend" width="200">
+                    <v-expansion-panels>
+                      <v-expansion-panel>
+                        <v-expansion-panel-title>
+                          <v-icon class="pr-2" icon="mdi-map-legend" />
+                          {{ $t('station.type') }} 
+                        </v-expansion-panel-title>
+                        <v-expansion-panel-text>
+                          <v-row no-gutters justify="center" align="center" v-for="(item, i) in legend" :key="i">
+                            <v-divider v-if="i !== 0" />
+                            <v-col cols="2" offset="1">
+                              <i class="dot pl-1 mt-1" :style="`background: ${item.color}`"> </i>
+                            </v-col>
+                            <v-col class="py-1">
+                              {{ item.type }}
+                            </v-col>
+                          </v-row>
+                        </v-expansion-panel-text>
+                      </v-expansion-panel>
+                    </v-expansion-panels>
+                  </v-card>
                 </l-control>
               </l-map>
             </p>
@@ -143,6 +149,7 @@ export default defineComponent({
       });
     },
     async loadStations() {
+      this.$root.loading = true;
       this.loading = true;
       var self = this;
       await this.$http({
@@ -152,13 +159,21 @@ export default defineComponent({
         .then(function (response) {
           self.features_.stations = response.data;
           self.numberMatched = response.data.numberMatched;
-          var bounds_ = geoJSON(response.data).getBounds();
-          self.map.fitBounds(bounds_);
         })
         .catch(this.$root.catch)
         .then(function () {
+          var bounds_ = geoJSON(self.features_.stations).getBounds();
+          self.map.fitBounds(bounds_);
+        })
+        .catch(function () {
+          self.$root.catch(`
+            <p>${self.$t("messages.does_not_exist")}</p>
+            <p>${self.$t("messages.how_to_link_station")}</p>`);
+        })
+        .then(function () {
+          self.$root.loading = false;
           self.loading = false;
-          setTimeout(self.loadStations, 900000);
+          // setTimeout(self.loadStations, 900000);
         });
     },
   },

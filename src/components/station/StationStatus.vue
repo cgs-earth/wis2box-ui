@@ -1,6 +1,6 @@
 <template id="station-status">
   <div class="station-status">
-    <v-tabs grow v-model="tab" color="#014e9e">
+    <v-tabs grow v-model="tab" color="primary">
       <v-tab :value="0">
         {{ $t("station.latest") }}
         <v-icon end icon="mdi-history" />

@@ -1,17 +1,16 @@
 <template id="app-header">
   <div class="app-header">
-    <v-app-bar flat height="124" color="#1d3e85">
+    <v-app-bar flat height="124" color="primary">
 
       <template v-slot:default>
         <v-responsive width="90%" max-width="1130" height="100%" class="mx-auto">
           <v-container fluid>
             <v-row fill-height>
-              <a :href="rise" title="hub2box">
-                <img :src="logo" class="pl-6 my-3" />
+              <a :href="provider" title="hub2box">
+                <img :src="logo" style="height: 80px;" class="pl-6 my-3" />
               </a>
               <v-spacer />
-              <token-auth :header="true" />
-              <select-locale class="pr-6" />
+              <app-settings class="ma-3" />
             </v-row>
           </v-container>
         </v-responsive>
@@ -21,8 +20,7 @@
 </template>
 
 <script>
-import SelectLocale from "./SelectLocale.vue";
-import TokenAuth from "./TokenAuth.vue";
+import AppSettings from "./AppSettings.vue";
 import logo from "@/assets/img/logo.png";
 
 import { defineComponent } from "vue";
@@ -31,12 +29,11 @@ export default defineComponent({
   name: "AppHeader",
   template: "#app-header",
   components: {
-    SelectLocale,
-    TokenAuth,
+    AppSettings
   },
   data: function () {
     return {
-      rise: "https://data.usbr.gov/rise/api",
+      provider: "https://internetofwater.org/",
       logo: logo,
     };
   },

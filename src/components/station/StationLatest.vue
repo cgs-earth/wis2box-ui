@@ -32,6 +32,7 @@ export default defineComponent({
     return {
       features_: this.features,
       recentObservations: [],
+      loading: this.$root.loading
     };
   },
   watch: {
@@ -40,6 +41,13 @@ export default defineComponent({
         if (station !== null) {
           this.recentObservations = [];
           this.loadObservations(station);
+        } else {
+          this.$root.catch(`
+            ${station.properties.name} ${this.$t(
+            "messages.no_linked_collections"
+            )} <br> ${this.$t("messages.how_to_link_station")}`);
+          this.loading = false;
+          this.tab = null;
         }
       },
     },
@@ -63,6 +71,7 @@ export default defineComponent({
     async loadObservations(station) {
       var self = this;
       for (const datastream of station.properties.Datastreams) {
+        this.$root.loading = true;
         await this.$http({
           method: "get",
           url: datastream,
@@ -74,7 +83,7 @@ export default defineComponent({
           .catch(this.$root.catch)
           .then(function () {
             self.tab = 0;
-            self.loading = false;
+            self.$root.loading = false;
             console.log("done");
           });
       }
@@ -83,6 +92,7 @@ export default defineComponent({
       this.loading = true;
       var self = this;
       if (datastream.properties.Observations.length === 0) {
+        this.loading = false;
         return
       }
       await this.$http({
@@ -92,7 +102,8 @@ export default defineComponent({
         // handle success
         self.recentObservations.push([datastream, response.data]);
       })
-        .catch(this.$root.catch);
+      .catch(this.$root.catch)
+      .then(this.loading = false);
     },
   },
 });

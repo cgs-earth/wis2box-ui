@@ -4,7 +4,7 @@
       <v-alert v-show="alert.value" type="warning" v-html="alert.msg" />
 
       <div :style="{ visibility: loading ? 'visible' : 'hidden' }">
-        <v-progress-linear striped indeterminate color="primary" />
+        <v-progress-linear striped indeterminate color="info" />
       </div>
       <div :style="{ visibility: !loading ? 'visible' : 'hidden' }">
         <v-card class="mx-auto" flat>
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import Plotly from "plotly.js-dist-min";
+import Plotly from "plotly.js-cartesian-dist-min";
 import { defineComponent } from "vue";
 import { mdiOpenInNew } from "@mdi/js";
 
@@ -49,7 +49,7 @@ export default defineComponent({
         x: [],
         y: [],
         line: {
-          color: "#014e9e",
+          color: "#007396",
         },
         name: "",
       },
@@ -60,7 +60,7 @@ export default defineComponent({
         y: [],
         marker: {
           size: 5,
-          color: "#014e9e",
+          color: "#007396",
         },
         name: "",
       },

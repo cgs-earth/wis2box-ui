@@ -6,13 +6,16 @@
     "datasets": "",
     "services": "",
     "data": "",
-    "documentation": ""
+    "documentation": "",
+    "wqie": ""
   },
   "util": {
     "token": "",
     "cancel": "",
     "save": "",
-    "close": ""
+    "close": "",
+    "settings": "",
+    "cluster": ""
   },
   "footer": {
     "powered_by": ""
@@ -20,11 +23,13 @@
   "messages": {
     "welcome": "",
     "no_observations_in_collection": "",
+    "authorized": "",
     "not_authorized": "",
     "no_linked_collections": "",
     "how_to_link_station": "",
     "from": "",
-    "no_of_observations": ""
+    "no_of_observations": "",
+    "does_not_exist": ""
   },
   "station": {
     "map": "",

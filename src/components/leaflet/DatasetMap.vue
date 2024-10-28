@@ -1,7 +1,7 @@
 <template id="dataset-map">
   <div class="dataset-map">
     <div v-if="loading">
-      <v-progress-linear striped indeterminate color="primary" />
+      <v-progress-linear striped indeterminate color="info" />
     </div>
     <div v-show="!loading">
       <l-map
