@@ -102,13 +102,13 @@ export default defineComponent({
       attribution: window.VUE_APP_BASEMAP_ATTRIBUTION,
       url: window.VUE_APP_BASEMAP_URL,
       legend: [
-        { "type": "Power Plant", "color": "#f44336" },
-        { "type": "Power Plant Unit", "color": "#ff9800" },
-        { "type": "Building", "color": "#ffeb3b" },
-        { "type": "Pump Generating Plant", "color": "#8bc34a" },
-        { "type": "Pump Generating Plant Unit", "color": "#009688" },
-        { "type": "Lake/Reservoir", "color": "#2196f3" },
-        { "type": "River/Stream", "color": "#673ab7" }
+        { "type": "OWRD", "color": "#f44336" },
+        // { "type": "Power Plant Unit", "color": "#ff9800" },
+        // { "type": "Building", "color": "#ffeb3b" },
+        // { "type": "Pump Generating Plant", "color": "#8bc34a" },
+        { "type": "OREGONDEQ", "color": "#009688" },
+        // { "type": "Lake/Reservoir", "color": "#2196f3" },
+        { "type": "Other", "color": "#673ab7" }
       ]
     };
   },

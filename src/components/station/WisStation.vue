@@ -78,17 +78,17 @@ export default defineComponent({
     },
     pointToLayer(feature, latLng) {
       const colors = {
-        "Power Plant": "#f44336",
-        "Power Plant Unit": "#ff9800",
-        "Building": "#ffeb3b",
-        "Pump Generating Plant": "#8bc34a",
-        "Pump Generating Plant Unit": "#009688",
-        "Lake/Reservoir": "#2196f3",
-        "River/Stream": "#673ab7"
+        "OWRD": "#f44336",
+        // "Power Plant Unit": "#ff9800",
+        // "Building": "#ffeb3b",
+        // "Pump Generating Plant": "#8bc34a",
+        "OREGONDEQ": "#009688",
+        // "Lake/Reservoir": "#2196f3",
+        "Other": "#673ab7"
       }
       const markerStyle = {
         radius: 6,
-        fillColor: colors[feature.properties.type],
+        fillColor: colors[feature.properties.organization] || "#673ab7",
         color: "#AAAAAA",
         weight: 1,
         opacity: 1,

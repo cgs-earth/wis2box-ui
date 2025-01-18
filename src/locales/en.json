@@ -40,7 +40,7 @@
     "latest": "Latest values",
     "report": "Station report",
     "limit": "Limit",
-    "type": "Station type"
+    "type": "Organization"
   },
   "chart": {
     "chart": "Plot",

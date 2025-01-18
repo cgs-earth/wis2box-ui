@@ -78,15 +78,15 @@ export default defineComponent({
     },
     getColor(station) {
       const colors = {
-        "Power Plant": "#f44336",
-        "Power Plant Unit": "#ff9800",
-        "Building": "#ffeb3b",
-        "Pump Generating Plant": "#8bc34a",
-        "Pump Generating Plant Unit": "#009688",
-        "Lake/Reservoir": "#2196f3",
-        "River/Stream": "#673ab7"       
+        "OWRD": "#f44336",
+        // "Power Plant Unit": "#ff9800",
+        // "Building": "#ffeb3b",
+        // "Pump Generating Plant": "#8bc34a",
+        "OREGONDEQ": "#009688",
+        // "Lake/Reservoir": "#2196f3",
+        "Other": "#673ab7"       
       }
-      return colors[station.properties.type];
+      return colors[station.properties.organization] || "#673ab7";
     },
   },
 });
