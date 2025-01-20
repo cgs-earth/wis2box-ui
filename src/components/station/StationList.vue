@@ -1,10 +1,24 @@
 <template id="station-list">
   <div class="station-list">
+    <v-text-field
+      v-model="searchQuery"
+      label="Search stations"
+      append-icon="mdi-magnify"
+      class="pa-3"
+      clearable
+      hide-details
+    ></v-text-field>
+
     <v-list lines="3">
       <v-hover v-slot="{ isHovering, props }">
-        <template v-for="(s, i) in stations" :key="i">
-          <v-list-item v-bind="props" height="50" :class="{ 'on-hover': isHovering }" @click="onClick(s)"
-            @mouseover="onHover(s)">
+        <template v-for="(s, i) in filteredStations" :key="i">
+          <v-list-item 
+            v-bind="props" 
+            height="50" 
+            :class="{ 'on-hover': isHovering }" 
+            @click="onClick(s)"
+            @mouseover="onHover(s)"
+          >
             <template v-slot:prepend>
               <i class="dot" :style="`background: ${getColor(s)}`" />
             </template>
@@ -14,7 +28,7 @@
             </template>
 
           </v-list-item>
-          <v-divider v-if="i + 1 < stations.length" />
+          <v-divider v-if="i + 1 < filteredStations.length" />
         </template>
       </v-hover>
     </v-list>
@@ -25,7 +39,6 @@
 let oapi = window.VUE_APP_OAPI;
 
 import { defineComponent } from "vue";
-
 import { clean } from "@/scripts/helpers.js";
 
 export default defineComponent({
@@ -35,6 +48,7 @@ export default defineComponent({
   data() {
     return {
       features_: this.features,
+      searchQuery: "",
     };
   },
   computed: {
@@ -43,8 +57,8 @@ export default defineComponent({
         return [];
       } else {
         const stns = [...this.features.stations.features].sort((a, b) => {
-          const nameA = a.properties.name.toUpperCase(); // ignore upper and lowercase
-          const nameB = b.properties.name.toUpperCase(); // ignore upper and lowercase
+          const nameA = a.properties.name.toUpperCase();
+          const nameB = b.properties.name.toUpperCase();
           if (nameA < nameB) {
             return -1;
           } else if (nameA > nameB) {
@@ -56,6 +70,13 @@ export default defineComponent({
         return stns;
       }
     },
+    filteredStations() {
+      const query = this.searchQuery.toLowerCase();
+      return this.stations.filter(station => 
+        station.properties.name.toLowerCase().includes(query) ||
+        station.id.toLowerCase().includes(query)
+      );
+    }
   },
   methods: {
     clean,
@@ -99,5 +120,11 @@ export default defineComponent({
   display: inline-block;
   border-radius: 50%;
   opacity: 0.8;
+}
+
+.station-list {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 </style>
