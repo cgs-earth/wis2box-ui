@@ -59,17 +59,18 @@ export default defineComponent({
       }
     },
     mapClick(e) {
-      this.features_.station = e.target.feature;
-      this.features_.datastreams.length = 0;
-      this.$root.toggleDialog();
+      if (e.target.feature === this.features_.station){
+        this.$root.toggleDialog();
+      } else {
+        this.features_.station = e.target.feature;
+        this.features_.datastreams.length = 0;
+      }
       e.originalEvent.stopPropagation();
     },
     onEachFeature(feature, layer) {
-      var self = this;
       var url = `${oapi}/collections/things/items/${feature.id}`;
       var content = `<a title="${feature.id}" href="${url}">${feature.properties.name}</a>`;
       layer.on("mouseover", function (e) {
-        self.features_.station = feature;
         layer.bindPopup(content).openPopup(e.latLng);
       });
       layer.on({

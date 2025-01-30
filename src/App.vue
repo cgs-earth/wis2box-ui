@@ -6,8 +6,7 @@
       <v-responsive class="pa-2">
         <v-row justify="center">
           <v-card flat width="90%" max-width="1130">
-            <v-layout>
-              <app-nav />
+            <v-layout class="my-2">
               <v-main>
                 <div :style="{ visibility: loading ? 'visible' : 'hidden' }">
                   <v-progress-linear striped indeterminate color="info" />
@@ -29,7 +28,6 @@
 import AppFooter from "@/components/app/AppFooter.vue";
 import AppHeader from "@/components/app/AppHeader.vue";
 import AppMsg from "@/components/app/AppMsg.vue";
-import AppNav from "@/components/app/AppNav.vue";
 
 let oapi = window.VUE_APP_OAPI;
 
@@ -39,7 +37,6 @@ export default {
   components: {
     AppFooter,
     AppHeader,
-    AppNav,
     AppMsg
   },
   data() {

@@ -60,6 +60,9 @@ export default defineComponent({
     openData(station) {
       this.features_.station = station;
       this.$root.toggleDialog();
+      this.$nextTick(() => {
+        this.tab = 0; // Force the first tab to remain selected
+      });
     },
   },
 });
